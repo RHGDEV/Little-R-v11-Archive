@@ -2,16 +2,9 @@ const config = require("../config.json");
 const whiteList = config.whitelistedServers
 
 module.exports = (bot) => {
-  console.log(`~~~~~~~~~~~~~~~  ${bot.user.username}  ~~~~~~~~~~~~~~~`);
-  console.log(``);
-  console.log(`~ Bot Name: ${bot.user.username}`);
+  console.log(`Loaded commands!\n`);
   console.log(`~ Prefix: ${config.prefix}`);
-  console.log(`~ Serving: ${bot.guilds.array().length} guild(s)`)
-  console.log(`~ Bot id: ${bot.user.id}`)
-  console.log(``);
-  console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`);
-  console.log(``);
-  console.log(``);
+  console.log(`~ Serving: ${bot.guilds.array().length}\n`)
   bot.user.setGame(`Little R | Loading...`)
 
   // Whitelist
@@ -30,8 +23,9 @@ module.exports = (bot) => {
       console.log(`[SERVER] [#${guild.memberCount}] ${guild.name}, ${guild.id} | Joined: ${guild.joinedAt.toString()}`)
     }
   });
-  console.log(``)
-
+  console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+  console.log(`${bot.user.username} loaded!\n`)
+  
   // Status Rotator
   gameval = 0
   setInterval(() => {

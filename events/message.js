@@ -1,9 +1,9 @@
-const log = require("../functions/log.js");
 const config = require("../config.json");
 const prefix = config.prefix
 const creatorid = config.creatorid
 const logid = config.clogid
-const profanities = require("profanities")
+//const profanities = require("profanities")
+const profanities = require("../profanities.json")
 
 module.exports = (bot, message, commands) => {
   let mArray = message.content.split(" ");
@@ -13,16 +13,7 @@ module.exports = (bot, message, commands) => {
     if(message.author.bot) return;
    // message.react("✅")
     if(message.channel.type === "dm"){
-      /*\
-      Cleverbot.prepare(function() {
-          message.channel.startTyping()
-          cleverbot.write(message.content, function (response) {
-             message.channel.send(response.message)
-             message.channel.stopTyping()
-          });
-       });
-       \*/
-      return;
+		return;
     }
     if(!cmd){
       if(message.channel.name == "photos"){
@@ -34,10 +25,11 @@ module.exports = (bot, message, commands) => {
       }
 
       for (x = 0; x < profanities.length; x++) {
-        if (message.content.toLowerCase() == profanities[x].toLowerCase()) {
+	  if (message.cleanContent.toLowerCase().includes(profanities[x].toLowerCase())) {
+       // if (message.content.toLowerCase() == profanities[x].toLowerCase()) {
           console.log(`[Profanity] ${message.author.username}, said ${profanities[x]} in the ${message.channel.name} channel!`)
           message.channel.send(`<@${message.author.id}>, Please do not use profanity in this server!`).then(m => m.delete(10000))
-          message.delete()
+          message.delete(500)
           return;
         }
       }
@@ -100,7 +92,7 @@ module.exports = (bot, message, commands) => {
 
        if (cmd.settings.deleteresponder) {
          if (!message.deletable) return console.log("Unable to remove message.")
-        // message.react("✅")
+         message.react("✅")
          setTimeout(function() {
            message.delete()
      		}, 3000)

@@ -4,8 +4,8 @@ const whiteList = config.whitelistedServers
 module.exports = (bot, guild) => {
 
   var allowedServer = false
-  whiteList.forEach(async (id) => {
-    if (guild.id == id){
+  whiteList.forEach(async(id) => {
+    if (guild.id == id) {
       allowedServer = true
     };
   });
@@ -14,4 +14,4 @@ module.exports = (bot, guild) => {
     guild.leave()
     return;
   }
-}
+};

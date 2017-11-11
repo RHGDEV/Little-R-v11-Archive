@@ -1,5 +1,3 @@
-const Discord = require("discord.js");
-const client = new Discord.Client();
 const config = require("../config.json");
 const fs = require("fs");
 var prefix = config.prefix
@@ -33,13 +31,10 @@ module.exports.run = (bot, message, args) => {
           }
         });
         msgA.push(`~ ${count}\n`)
-
+        count = 0
       });
-      message.channel.send(msgA, {
-        code: 'asciidoc'
-      }).then(m => m.delete(25000))
+      message.channel.send(msgA, {code: 'asciidoc'}).then(m => m.delete(25000))
       msgA = []
-      count = 0
       if (message.author.id == config.creatorid) {
         msgA.push(`= **CREATOR ONLY** =\n`)
         jsfiles.forEach((f, i) => {
@@ -73,16 +68,19 @@ module.exports.run = (bot, message, args) => {
           msgB.push(`**Infomation:** ${p.help.information}`)
           msgB.push(`**Permissions:** ${p.settings.permission}+`)
           var Perms = "No"
-          if (p.settings.permission.toLowerCase == "creator") {
+          if (p.settings.permission.toLowerCase() == "creator") {
             if (message.author.id == config.creatorID) {
               Perms = "Yes"
             }
           }
 
-          if (p.settings.permission.toLowerCase == "admins") {
+          if (p.settings.permission.toLowerCase() == "admins") {
             if (message.member.roles.some(r => ["RHG", "Admin"].includes(r.name))) {
               Perms = "Yes"
             };
+          }
+		  if (p.settings.permission.toLowerCase() == "all") {
+            Perms = "Yes"
           }
           msgB.push(`**Permission To Use:** ${Perms}`)
           msgB.push(`\nDiscord Bot by RHG#0822`)

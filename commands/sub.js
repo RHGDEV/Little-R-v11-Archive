@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const config = require("../config.json");
 const aRoles = config.avaibleroles
 
@@ -6,11 +5,14 @@ module.exports.run = (bot, message, args) => {
 	if(!args[0]){
 
 		var msgArray = [];
-		msgArray.push(`= Subscribable Roles =\n[use ${config.prefix}sub <Role Name> to subscribe/Unsubscribe to it.]\n`);
+		msgArray.push(`= Subscribable Roles =\n[use ${config.prefix}sub <Role Name> to subscribe/unsubscribe to it.]\n`);
 		aRoles.forEach(async (role, i) => {
 			msgArray.push(`#${i+1} - ${role}`);
 		});
-    message.channel.send(msgArray).then(m => m.delete(15000))
+		if(msgArray == `= Subscribable Roles =\n[use ${config.prefix}sub <Role Name> to subscribe/unsubscribe to it.]\n`){
+					msgArray.push(`[ == Looks like there's no subscribable roles. ==]`)
+			}
+    message.channel.send(msgArray, {code: 'asciidoc'}).then(m => m.delete(15000))
 
 		return;
 	}
@@ -20,29 +22,26 @@ module.exports.run = (bot, message, args) => {
 	aRoles.forEach(async (role, i) => {
 		if(role.toLowerCase() == wantedRole){
 			let wRole = message.guild.roles.find("name", role)
-			if(!wRole){return message.channel.send("Some error has happen")}
+			if(!wRole){return message.channel.send("Some error has happen").then(m => m.delete(2500))}
 			if(!gm.roles.find("id", wRole.id)){
 				gm.addRole(wRole.id)
-				setTimeout(continueEx1, 500);
-				function continueEx1() {
+				setTimeout(function () {
 					if(gm.roles.find("id", wRole.id)){
 						message.channel.send(`${message.author}, you are now subscribed to ${wRole.name}!`).then(m => m.delete(5000))
 					} else {
 						message.channel.send(`${message.author}, unable to subscribe to ${wRole.name}!`).then(m => m.delete(5000))
 					}
-				}
-				//message.channel.send(`${message.author}, you are now subscribed to ${wRole.name}!`)
+				}, 500)
 				return;
 			} else {
 				gm.removeRole(wRole.id)
-				setTimeout(continueEx2, 500);
-				function continueEx2() {
+				setTimeout(function () {
 					if(!gm.roles.find("id", wRole.id)){
 						message.channel.send(`${message.author}, you are now unsubscribed to ${wRole.name}!`).then(m => m.delete(2500))
 					} else {
 						message.channel.send(`${message.author}, unable to unsubscribe to ${wRole.name}!`).then(m => m.delete(2500))
 					}
-				}
+				}, 500)
 				return;
 			}
 		}

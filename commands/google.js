@@ -1,7 +1,6 @@
 const cheerio = require('cheerio');
 const snekfetch = require('snekfetch');
 const querystring = require('querystring');
-const config = require("../config.json");
 
 module.exports.run = (bot, message, args) => {
 	if(!args[0]){

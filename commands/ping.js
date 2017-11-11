@@ -1,5 +1,3 @@
-const config = require("../config.json");
-
 module.exports.run = (bot, message, args) => {
   message.channel.send(`Pong...`).then((m) => {
     m.edit(`Pong!\nLatency is ${m.createdTimestamp - message.createdTimestamp}ms.\nAPI Latency is ${Math.round(bot.ping)}ms.`)

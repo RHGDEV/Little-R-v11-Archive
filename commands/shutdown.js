@@ -1,4 +1,3 @@
-const config = require("../config.json");
 module.exports.run = (bot, message, args) => {
   message.channel.send(":wave: Little R will now Shutdown...").then(m => m.delete(9999))
   setTimeout(function() {
