@@ -23,4 +23,4 @@ bot.on(`guildMemberAdd`, member => require("./events/guildMemberAdd.js")(bot, me
 bot.on(`guildCreate`, (guild) => require("./events/guildCreate.js")(bot, guild));
 
 // -- Login --
-bot.login(require("./config.json").token)
+bot.login(process.env.token)
