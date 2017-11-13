@@ -1,7 +1,7 @@
 const config = require("../config.json");
 const fs = require("fs");
 var prefix = config.prefix
-const commandCategories = ["Moderation", "Fun", "Info"]
+const commandCategories = ["Moderation", "Info", "Fun"]
 
 
 module.exports.run = (bot, message, args) => {
@@ -20,7 +20,7 @@ module.exports.run = (bot, message, args) => {
 
       let jsfiles = files.filter(f => f.split(".").pop() === "js");
       commandCategories.forEach((cate, i) => {
-        msgA.push(`= ${cate} =\n`)
+        msgA.push(`= ${cate} =`)
         jsfiles.forEach((f, i) => {
           let p = require(`../commands/${f}`);
           if (p.settings.category == cate) {

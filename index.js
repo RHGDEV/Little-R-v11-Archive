@@ -1,6 +1,6 @@
-// RHG's Personal bot
+// RHG#0822's Discord Bot (WHITELIST USE ONLY)
 // Date Started:    9/20/17
-// Last Edited:     11/8/17
+// Last Edited:     11/10/17
 // Date Finished:   N/A
 // ~~~~~~~~~~~~~ Little R ~~~~~~~~~~~~~
 
@@ -10,10 +10,7 @@ const bot = new Discord.Client();
 
 // -- Gather commands --
 bot.commands = new Discord.Collection();
-
 require('fs').readdir("./commands/", (err, files) => {
-	console.log("Loading commands...")
-  if (err) return console.log(`Command loading failed!`);
   files.filter(f => f.split(".").pop() === "js").forEach((f, i) => {
     bot.commands.set(require(`./commands/${f}`).help.name, require(`./commands/${f}`));
   })

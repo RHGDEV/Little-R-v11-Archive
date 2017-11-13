@@ -1,0 +1,20 @@
+{
+  "name": "littler",
+  "version": "2.5.3",
+  "description": "Little R the personal discord bot. This bot has a whitelist system so please do not attempt to add it to your server.",
+  "main": "index.js",
+  "author": "RHG",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "cleverbot-node": "^0.3.11",
+    "discord.js": "^11.2.1",
+    "humanize-duration": "^3.10.1",
+    "ms": "^2.0.0",
+    "nodemon": "^1.12.1",
+    "profanities": "^2.5.0",
+    "querystring": "^0.2.0",
+    "request": "^2.83.0",
+    "snekfetch": "^3.5.3"
+  }
+}

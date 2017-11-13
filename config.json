@@ -1,0 +1,15 @@
+{
+
+  "token": "",
+
+  "prefix": "l;",
+  "creatorid": "140487710727995392",
+  "clogid": "334394109022306305",
+  "adminrole": "Admin",
+  "ownerrole": "RHG",
+  "avaibleroles": ["Steam", "Minecraft", "ROBLOX"],
+
+  "whitelistedServers": ["304402108059484161", "331998474545528833", "286910367668502528", "321102622700470272"],
+
+  "statues": ["Little R 🤖", "WELL, I love being a bot", "🤖 Im a beautiful bot", "🔫", "Just sitting here."]
+}
