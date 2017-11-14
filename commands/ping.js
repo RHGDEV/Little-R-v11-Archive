@@ -11,7 +11,7 @@ module.exports.help = {
 }
 
 module.exports.settings = {
-	permission: "Creator",
+	permission: "All",
 	deleteresponder: true,
 	category: "Info"
 }
