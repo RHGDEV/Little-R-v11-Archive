@@ -1,4 +1,5 @@
 const ms = require("ms");
+const Discord = require('discord.js');
 
 module.exports.run = (bot, message, args) => {
 		var member = message.mentions.members.first();
