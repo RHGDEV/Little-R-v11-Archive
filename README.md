@@ -7,7 +7,7 @@ Little R is currently a bot for my guild only.
 In the dear future I will probally expand it to make it a bot for everyone to download and use.
 You can try to use the bot right now, but it's whitelist only. I'd still give you the link to add it though.
 
-[Bot Invite](https://discordapp.com/oauth2/authorize?client_id=360578020492312576&scope=bot&permissions=268512326&redirect_uri=http%3A%2F%2Frhg.my-free.website%2F)
+[Bot Invite](https://discordapp.com/oauth2/authorize?client_id=360578020492312576&scope=bot&permissions=268512326)
 
 But if you would like to come and look at the bot in function on my guild! Come and join!
 
