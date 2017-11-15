@@ -3,7 +3,7 @@ const config = require("./config.json");
 
 const shard = new Discord.ShardingManager("./index.js", {
 	totalShards: "auto",
-	token: config.token,
+	token: process.env.token,
 	respawn: true
 });
 
