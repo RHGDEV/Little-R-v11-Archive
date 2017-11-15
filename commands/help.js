@@ -30,7 +30,7 @@ module.exports.run = (bot, message, args) => {
           }
         });
         let embed = new discord.RichEmbed()
-  		    .setTitle(`${cate} ${commandEmojis[i]}`, bot.user.displayAvatarURL)
+  		    .setAuthor(`${cate} ${commandEmojis[i]}`, bot.user.avatarURL)
           .setDescription(msgA)
           .setColor("7289DA")
           .setFooter(`${count} | ${bot.user.username} Command List | Discord Bot by RHG#0822`)
@@ -49,7 +49,7 @@ module.exports.run = (bot, message, args) => {
           }
         });
         let embed = new discord.RichEmbed()
-         .setTitle(`CREATOR ONLY`, bot.user.displayAvatarURL)
+          .setAuthor(`CREATOR ONLY`, bot.user.avatarURL)
           .setDescription(msgA)
           .setColor("7289DA")
           .setFooter(`${count} | ${bot.user.username} Command List | Discord Bot by RHG#0822`)
@@ -90,7 +90,7 @@ module.exports.run = (bot, message, args) => {
           }
           msgB.push(`  **Permission To Use:** ${Perms}`)
           let embed = new discord.RichEmbed()
-           .setTitle(`Help menu for ${p.help.name}`, bot.user.displayAvatarURL)
+            .setAuthor(`Help menu for ${p.help.name}`, bot.user.avatarURL)
             .setDescription(msgB)
             .setColor("7289DA")
             .setFooter(`${bot.user.username} | Discord Bot by RHG#0822`)
