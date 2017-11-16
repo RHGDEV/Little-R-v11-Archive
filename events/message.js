@@ -47,7 +47,7 @@ module.exports = (bot, message, commands) => {
   if (cmd) {
     message.channel.startTyping();
 
-    if (cmd.settings.permission.toLowerCase == "creator") {
+    if (cmd.settings.permission.toLowerCase() == "creator") {
       if (!message.author.id == config.creatorID) {
         message.channel.send(":x: Invaild permissions! Needed: Creator").then(m => m.delete(2500))
         message.channel.stopTyping();
@@ -56,7 +56,7 @@ module.exports = (bot, message, commands) => {
       };
     };
 
-    if (cmd.settings.permission.toLowerCase == "admins") {
+    if (cmd.settings.permission.toLowerCase() == "admins") {
       if (!message.member.roles.some(r => ["RHG", "Admin"].includes(r.name))) {
         message.channel.send(":x: Invaild permissions! Needed: Admin+").then(m => m.delete(2500))
         message.channel.stopTyping();
