@@ -10,8 +10,10 @@ module.exports = (bot, guild) => {
     };
   });
   if (!allowedServer) {
-    console.log(`[LEFT] ${guild.name}, ${guild.id} due to whitelist`)
+    console.log(`[LEFT] [#${guild.memberCount}] ${guild.name}, ${guild.id} due to whitelist`)
     guild.leave()
     return;
+  } else {
+    console.log(`[SERVER] [#${guild.memberCount}] ${guild.name}, ${guild.id} | Joined: ${guild.joinedAt.toString()}`)
   }
 };

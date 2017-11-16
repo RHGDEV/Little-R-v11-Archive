@@ -4,8 +4,8 @@ const whiteList = config.whitelistedServers
 module.exports = (bot) => {
   console.log(`Loaded commands!\n`);
   console.log(`~ Prefix: ${config.prefix}`);
-  console.log(`~ Serving: ${bot.guilds.array().length}\n`)
-  bot.user.setGame(`Little R | Loading...`)
+  console.log(`~ ${bot.guilds.array().length} Guilds ${bot.channels.array().length} Channels ${bot.users.array().length} Users\n`)
+  bot.user.setGame(`${bot.user.username} | Loading...`)
 
   // Whitelist
   bot.guilds.forEach(async(guild, id) => {
@@ -16,7 +16,7 @@ module.exports = (bot) => {
       };
     });
     if (!allowedServer) {
-      console.log(`[LEFT] ${guild.name}, ${guild.id} due to whitelist`)
+      console.log(`[LEFT] [#${guild.memberCount}] ${guild.name}, ${guild.id} due to whitelist`)
       guild.leave()
       return;
     } else {
@@ -25,7 +25,7 @@ module.exports = (bot) => {
   });
   console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
   console.log(`${bot.user.username} loaded!\n`)
-  
+
   // Status Rotator
   gameval = 0
   setInterval(() => {
