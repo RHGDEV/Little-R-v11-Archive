@@ -1,5 +1,6 @@
 const ms = require("ms");
 const Discord = require('discord.js');
+const {makeCase} = require('../util/makeCase.js');
 
 module.exports.run = (bot, message, args) => {
 		var member = message.mentions.members.first();
@@ -39,16 +40,19 @@ module.exports.run = (bot, message, args) => {
 		 if(time == 0) {
 			 member.addRole(muteRole.id);
 	 		message.channel.send(`${member.user.username}, is now muted.`).then(m => m.delete(2500))
+			makeCase(bot, "😶 Mute", `${rarg.join(" ")}`, message.author.tag, member.user.tag)
 	 		let muteds = new Discord.RichEmbed()
 	         .setColor(`#FF0000`)
 	         .setAuthor(`Hi, ${member.user.username}!`)
 	 				 .setDescription(`:mute: You are now muted in ${message.guild.name}.`)
 	         .addField(`Muted by:`, `${message.author.username}#${message.author.discriminator}`)
+					 .addField(`Reason:`, `${reason}`)
 	         .setFooter(`MUTED`)
 	         .setTimestamp()
 	 	 member.user.send({embed: muteds});
 		 return;
 		 }
+		 makeCase(bot, "😶 Timed Mute", `${rarg.join(" ")}`, message.author.tag, member.user.tag, `**Time:** ${ms(ms(time), {long: true})}`)
 		member.addRole(muteRole.id);
 		message.channel.send(`${member.user.username}, is now muted for ${ms(ms(time), {long: true})}`).then(m => m.delete(2500))
 		let muteds = new Discord.RichEmbed()
