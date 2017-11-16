@@ -48,7 +48,7 @@ module.exports = (bot, message, commands) => {
     message.channel.startTyping();
 
     if (cmd.settings.permission.toLowerCase() == "creator") {
-      if (!message.author.id == config.creatorid) {
+      if (!message.author.id == creatorid) {
         message.channel.send(":x: Invaild permissions! Needed: Creator").then(m => m.delete(2500))
         message.channel.stopTyping();
         removedat(message, cmd)
