@@ -20,7 +20,17 @@ module.exports = (bot, message, commands) => {
 
   let cmd = commands.get(mArray[0].slice(prefix.length));
   if (message.author.bot) return;
-  if (message.channel.type === "dm") return
+  if (message.channel.type === "dm") {
+    if(message.cleanContent.toLowerCase() == "cleardm") {
+      message.channel.fetchMessages({limit: 100}).then(m => {
+        m.forEach(async(msg) => {
+          if (msg.author.id == bot.user.id) {
+            msg.delete()
+          };
+        });
+      });
+    }
+  }
 
   if (!cmd) {
     if (message.channel.name == "photos") {
