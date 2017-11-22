@@ -3,7 +3,7 @@ const discord = require('discord.js');
 const fs = require("fs");
 var prefix = config.prefix
 const commandCategories = ["Moderation", "Info", "Fun"]
-const commandEmojis = ["🛠🔨", "❓❔", "🙃😛"]
+const commandEmojis = ["🛠", "❔", "🙃😛"]
 
 module.exports.run = (bot, message, args) => {
 
@@ -69,7 +69,7 @@ module.exports.run = (bot, message, args) => {
           if (p.settings.permission.toLowerCase() == "creator") {
             if (message.author.id !== config.creatorid) return
           }
-          msgA.push(`   -`)
+          msgB.push(`   -`)
           msgB.push(`  **Usage:** ${config.prefix}${p.help.name} ${p.help.usage}`)
           msgB.push(`  **Infomation:** ${p.help.information}`)
           msgB.push(`  **Permissions:** ${p.settings.permission}+`)
