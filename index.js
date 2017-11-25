@@ -1,6 +1,6 @@
 // RHG#0822's Discord Bot (WHITELIST USE ONLY)
 // Date Started:    9/20/17
-// Last Edited:     11/16/17
+// Last Edited:     11/25/17
 // Date Finished:   N/A
 // ~~~~~~~~~~~~~ Little R ~~~~~~~~~~~~~
 
@@ -19,6 +19,7 @@ require('fs').readdir("./commands/", (err, files) => {
 // -- Handles --
 bot.on(`ready`, () => require("./events/ready.js")(bot));
 bot.on(`message`, (msg) => require("./events/message.js")(bot, msg, bot.commands));
+bot.on(`message`, (msg) => require("./musicbot/musicHandle.js")(bot, msg));
 bot.on(`guildMemberAdd`, (member) => require("./events/guildMemberAdd.js")(bot, member));
 bot.on(`guildMemberRemove`, (member) => require("./events/guildMemberRemove.js")(bot, member));
 bot.on(`guildBanRemove`, (guild, member) => require("./events/guildBanRemove.js")(bot, guild, member));

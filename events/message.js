@@ -19,6 +19,9 @@ module.exports = (bot, message, commands) => {
   let args = mArray.slice(1);
 
   let cmd = commands.get(mArray[0].slice(prefix.length));
+  if (!cmd) {
+    if (message.content.startsWith(`${prefix}music`)) return console.log(`yeah music!`);
+  }
   if (message.author.bot) return;
   if (message.channel.type === "dm") {
     if(message.cleanContent.toLowerCase() == "cleardm") {
@@ -40,16 +43,16 @@ module.exports = (bot, message, commands) => {
         return;
       };
     };
-   // for (x = 0; x < profanities.length; x++) {
-     // if (message.cleanContent.toLowerCase().includes(profanities[x].toLowerCase())) {
-        // if (message.content.toLowerCase() == profanities[x].toLowerCase()) {
-     //   console.log(`[Profanity] ${message.author.username}, said ${profanities[x]} in the ${message.channel.name} channel!`)
-     //   makeCase(bot, "Profanity", `Auto-Mod`, bot.user.tag, message.author.tag, `**Said:** ${profanities[x]}\n**Message:** ${message.content}`)
-     //   message.channel.send(`<@${message.author.id}>, Please do not use profanity in this server!`).then(m => m.delete(10000))
-     //   message.delete(500)
-     //   return;
-    //  };
-    //};
+    // for (x = 0; x < profanities.length; x++) {
+    //   if (message.cleanContent.toLowerCase().includes(profanities[x].toLowerCase())) {
+    //     // if (message.content.toLowerCase() == profanities[x].toLowerCase()) {
+    //     console.log(`[Profanity] ${message.author.username}, said ${profanities[x]} in the ${message.channel.name} channel!`)
+    //     makeCase(bot, "Profanity", `Auto-Mod`, bot.user.tag, message.author.tag, `**Said:** ${profanities[x]}\n**Message:** ${message.content}`)
+    //     message.channel.send(`<@${message.author.id}>, Please do not use profanity in this server!`).then(m => m.delete(10000))
+    //     message.delete(500)
+    //     return;
+    //   };
+    // };
   };
 
   if (message.content.indexOf(config.prefix) !== 0) return;

@@ -1,6 +1,6 @@
 {
   "name": "littler",
-  "version": "2.5.3",
+  "version": "2.6.0",
   "description": "Little R the personal discord bot. This bot has a whitelist system so please do not attempt to add it to your server.",
   "main": "index.js",
   "author": "RHG",
@@ -9,12 +9,17 @@
     "cheerio": "^1.0.0-rc.2",
     "cleverbot-node": "^0.3.11",
     "discord.js": "^11.2.1",
+    "ffmpeg": "0.0.4",
+    "ffmpeg-binaries": "^3.2.2-3",
     "humanize-duration": "^3.10.1",
     "ms": "^2.0.0",
     "nodemon": "^1.12.1",
+    "opusscript": "0.0.4",
     "profanities": "^2.5.0",
     "querystring": "^0.2.0",
     "request": "^2.83.0",
-    "snekfetch": "^3.5.3"
+    "snekfetch": "^3.5.3",
+    "youtube-search": "^1.0.10",
+    "ytdl-core": "^0.18.2"
   }
 }
