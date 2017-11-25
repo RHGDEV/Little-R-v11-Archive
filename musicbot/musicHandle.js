@@ -1,6 +1,5 @@
 const prefix = require("../config.json").prefix
-const ytapi = require("../config.json").ytapikey
-//const ytapi = process.env.ytapikey
+const ytapi = process.env.ytapikey
 const search = require('youtube-search');
 const Discord = require('discord.js');
 const YTDL = require("ytdl-core");
