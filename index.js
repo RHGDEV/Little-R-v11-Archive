@@ -1,6 +1,6 @@
 // Rusty's Discord Bot (WHITELIST USE ONLY)
 // Date Started:    9/20/17
-// Last Edited:     11/24/17
+// Last Edited:     11/27/17
 // Date Finished:   N/A (Probally will never be finished 🔫)
 // ~~~~~~~~~~~~~ Little R ~~~~~~~~~~~~~
 
@@ -27,4 +27,4 @@ bot.on(`guildCreate`, (guild) => require("./events/guildCreate.js")(bot, guild))
 bot.on(`guildDelete`, (guild) => require("./events/guildDelete.js")(bot, guild));
 
 // -- Login --
-bot.login(require("./config.json").token)
+bot.login(process.env.token)
