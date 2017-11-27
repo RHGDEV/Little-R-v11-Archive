@@ -1,7 +1,7 @@
-// RHG#0822's Discord Bot (WHITELIST USE ONLY)
+// Rusty's Discord Bot (WHITELIST USE ONLY)
 // Date Started:    9/20/17
-// Last Edited:     11/25/17
-// Date Finished:   N/A
+// Last Edited:     11/24/17
+// Date Finished:   N/A (Probally will never be finished 🔫)
 // ~~~~~~~~~~~~~ Little R ~~~~~~~~~~~~~
 
 // -- Constants --
@@ -27,4 +27,4 @@ bot.on(`guildCreate`, (guild) => require("./events/guildCreate.js")(bot, guild))
 bot.on(`guildDelete`, (guild) => require("./events/guildDelete.js")(bot, guild));
 
 // -- Login --
-bot.login(process.env.token)
+bot.login(require("./config.json").token)

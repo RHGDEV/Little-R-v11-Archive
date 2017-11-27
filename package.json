@@ -3,7 +3,7 @@
   "version": "2.6.0",
   "description": "Little R the personal discord bot. This bot has a whitelist system so please do not attempt to add it to your server.",
   "main": "index.js",
-  "author": "RHG",
+  "author": "RHG#0822",
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",

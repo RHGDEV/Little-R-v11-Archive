@@ -3,7 +3,10 @@ const prefix = config.prefix
 const creatorid = config.creatorid
 const logid = config.clogid
 const profanities = require("../profanities.json")
-const {makeCase} = require('../util/makeCase.js');
+const {makeCase} = require("../util/makeCase.js");
+const checkPerm = require("../util/permissions.js");
+const notCommand = require("../util/nonCommand.js");
+const dmCommands = require("../util/dmCommands.js");
 
 function removedat(msg, cmd) {
   if (cmd.settings.deleteresponder) {
@@ -17,71 +20,38 @@ function removedat(msg, cmd) {
 module.exports = (bot, message, commands) => {
   let mArray = message.content.split(" ");
   let args = mArray.slice(1);
-
   let cmd = commands.get(mArray[0].slice(prefix.length));
-  if (!cmd) {
-    if (message.content.startsWith(`${prefix}music`)) return console.log(`yeah music!`);
-  }
   if (message.author.bot) return;
+
   if (message.channel.type === "dm") {
-    if(message.cleanContent.toLowerCase() == "cleardm") {
-      message.channel.fetchMessages({limit: 100}).then(m => {
-        m.forEach(async(msg) => {
-          if (msg.author.id == bot.user.id) {
-            msg.delete()
-          };
-        });
-      });
-    }
+    console.log("dm console");
+    dmCommands(bot, message);
+    return;
   }
 
   if (!cmd) {
-    if (message.channel.name == "photos") {
-      if (message.attachments.size === 0) {
-        message.channel.send(`<@${message.author.id}>, You're not allowed to talk in a photo only channel!`).then(m => m.delete(10000))
-        message.delete(2500)
-        return;
-      };
-    };
-    // for (x = 0; x < profanities.length; x++) {
-    //   if (message.cleanContent.toLowerCase().includes(profanities[x].toLowerCase())) {
-    //     // if (message.content.toLowerCase() == profanities[x].toLowerCase()) {
-    //     console.log(`[Profanity] ${message.author.username}, said ${profanities[x]} in the ${message.channel.name} channel!`)
-    //     makeCase(bot, "Profanity", `Auto-Mod`, bot.user.tag, message.author.tag, `**Said:** ${profanities[x]}\n**Message:** ${message.content}`)
-    //     message.channel.send(`<@${message.author.id}>, Please do not use profanity in this server!`).then(m => m.delete(10000))
-    //     message.delete(500)
-    //     return;
-    //   };
-    // };
+    if (message.content.startsWith(`${prefix}music`)) return;
+    notCommand(bot, message)
+    return;
   };
 
   if (message.content.indexOf(config.prefix) !== 0) return;
 
   if (cmd) {
     message.channel.startTyping();
-
-    if (cmd.settings.permission.toLowerCase() == "creator") {
-      if (message.author.id !== creatorid) {
-        message.channel.send(":x: Invaild permissions! Needed: Creator").then(m => m.delete(2500))
-        message.channel.stopTyping();
-        removedat(message, cmd)
-        return;
-      };
-    };
-
-    if (cmd.settings.permission.toLowerCase() == "admins") {
-      if (!message.member.roles.some(r => ["RHG", "Admin"].includes(r.name))) {
-        message.channel.send(":x: Invaild permissions! Needed: Admin+").then(m => m.delete(2500))
-        message.channel.stopTyping();
-        removedat(message, cmd)
-        return;
-      };
-    };
+    // const cmdperm = await checkPerms(bot, message, cmd.settings.permission.toLowerCase())
+    if (checkPerm(bot, message, cmd.settings.permission.toLowerCase()) == false) {
+      message.channel.stopTyping();
+      removedat(message, cmd);
+      return;
+    }
 
     cmd.run(bot, message, args);
-    removedat(message, cmd)
+
+    removedat(message, cmd);
+
     setTimeout(function() {
-      message.channel.stopTyping();
-    }, 5000)
+      message.channel.stopTyping()
+    }, 5000);
   };
 }

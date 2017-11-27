@@ -1,19 +1,27 @@
-const config = require("../config.json");
+const discord = require('discord.js');
+const pak = require("../package.json")
+const config = require("../config.json")
 
 module.exports.run = (bot, message, args) => {
-  var msgArray = [];
-  msgArray.push(`Hello, I'm ${bot.user.username}, a Discord bot.`);
-  msgArray.push(`I'm currently running on Discord.js version 11.2.1, which utilizes the latest version of Discord.js, an *unofficial* Discord libary by hydrabolt.`);
-  msgArray.push(`The developer of my source code is <@140487710727995392>.`);
-  msgArray.push(`To see what I can do, use ${config.prefix}help`);
-  msgArray.push(`My invocation method is using prefixes, currently, I only respond to messages beginning with ${config.prefix}`);
-  message.channel.send(msgArray).then(m => m.delete(15000))
+  let embed = new discord.RichEmbed()
+    .setTimestamp()
+    .setAuthor(`${bot.user.username} Infomation`, bot.user.avatarURL)
+    .setColor("7289DA")
+    .addField(`Version`, `${pak.version}`, true)
+    .addField(`Library`, `discord.js`, true)
+    .addField(`Creator`, `${pak.author}`, true)
+    .addField(`Servers`, `${bot.guilds.array().length}`, true)
+    .addField(`Users`, `${bot.users.array().length}`, true)
+    .addField(`Channels`, `${bot.channels.array().length}`, true)
+    .addField(`Invite`, `N/A`, true)
+    .addField(`Support`, `[Patreon](https://www.patreon.com/_RHG)`, true)
+  message.channel.send({embed}).then(m => m.delete(35000))
 }
 
 module.exports.help = {
   name: "info",
   usage: ``,
-  information: "I'll tell you some information about myself."
+  information: "I'll tell you some information on me!"
 }
 
 module.exports.settings = {
