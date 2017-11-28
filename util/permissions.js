@@ -1,6 +1,10 @@
 const config = require("../config.json");
 
 module.exports = (bot, message, perm) => {
+  if (message.author.id == config.creatorid) {
+      return true
+    };
+  
   if (perm == "creator") {
     if (message.author.id !== config.creatorid) {
       message.channel.send(":x: Invaild permissions! Needed: Creator").then(m => m.delete(25000))
