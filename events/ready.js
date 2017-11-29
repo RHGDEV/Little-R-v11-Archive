@@ -6,7 +6,7 @@ module.exports = (bot) => {
   console.log(`Loaded commands!\n`);
   console.log(`~ Prefix: ${config.prefix}`);
   console.log(`~ ${bot.guilds.array().length} Guilds ${bot.channels.array().length} Channels ${bot.users.array().length} Users\n`)
-  bot.user.setGame(`${bot.user.username} | Loading...`, `https://twitch.com/twitch`)
+  bot.user.setGame(`Loading ${bot.user.username}... | littler.tk`, `https://twitch.com/twitch`)
   //bot.user.setPresence(`${bot.user.username}`, {type: 'LOADING'});
 
   // Whitelist
@@ -34,7 +34,7 @@ module.exports = (bot) => {
       gameval = 0
     }
     var game = config.statues[gameval]
-    bot.user.setGame(`${config.prefix}help | ${game}`)
+    bot.user.setGame(`${config.prefix}help | littler.tk | ${game}`)
     //console.log(`Change staus: ${game} ${gameval}/${config.statues.length}`)
     gameval++
   }, 60000) // One min
