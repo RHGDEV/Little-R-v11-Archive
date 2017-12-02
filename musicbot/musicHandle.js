@@ -1,6 +1,6 @@
 const prefix = require("../config.json").prefix
 const premiumServers = require("../config.json").premiumServers
-const ytapi = process.env.ytapikey
+const ytapi = require("../config.json").ytapikey ? require("../config.json").ytapikey : process.env.ytapikey
 const search = require('youtube-search');
 const Discord = require('discord.js');
 const YTDL = require("ytdl-core");
@@ -18,39 +18,38 @@ function play(connect, msg, bot) {
   console.log(`[PLER] Now started playing music in ${msg.guild.name}`)
   let vidlive = false
   YTDL.getInfo(server.queue[0]).then(info => {
-    console.log(info)
-    console.log(info.live)
+    //console.log(info)
+    //console.log(info.live)
     let em = new Discord.RichEmbed()
       .setColor("7289DA")
       .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
       .setThumbnail(info.iurlmq)
       .setDescription(`I will now start playing **${info.title}** in ${connect.channel.name}\n\n**By:** ${info.author.name}\n**Link:** ${server.queue[0]}\n**Length:** ${info.length_seconds}`)
 
-    msg.channel.send({embed: em}).then(m => m.delete(55000))
+    msg.channel.send({embed: em}).then(m => m.delete(`${info.length_seconds}000`))
 
     if (info.length_seconds == 0) return console.log(`error`);
 
     server.dispatcher = connect.playStream(YTDL(server.queue[0], {filter: "audioonly"}), {seek: 0, volume: 1})//, bitrate: "auto"});
+
+    server.dispatcher.on("end", function() {
+      if (server.queue[0]) {
+        server.queue.shift();
+        play(connect, msg, bot)
+      } else {
+        connect.disconnect()
+        console.log(`[PLER] Now stopped playing music in ${msg.guild.name}`)
+        let em = new Discord.RichEmbed()
+          .setColor("7289DA")
+          .setDescription(`I have now stopped playing in ${connect.channel.name}`)
+          .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
+
+        msg.channel.send({embed: em}).then(m => m.delete(25000))
+      };
+    });
+
   });
-
- // server.dispatcher = connect.playStream(YTDL(server.queue[0], {filter: "audioonly"}), {seek: 0, volume: 1, bitrate: "auto"});
-
-  server.dispatcher.on("end", function() {
-    if (server.queue[0]) {
-      server.queue.shift();
-      play(connect, msg, bot)
-    } else {
-      connect.disconnect()
-      console.log(`[PLER] Now stopped playing music in ${msg.guild.name}`)
-      let em = new Discord.RichEmbed()
-        .setColor("7289DA")
-        .setDescription(`I have now stopped playing in ${connect.channel.name}`)
-        .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
-
-      msg.channel.send({embed: em}).then(m => m.delete(25000))
-    }
-  })
-}
+};
 
 function removedat(msg) {
   if (msg.channel.type === "dm") return;
@@ -74,7 +73,7 @@ module.exports = (bot, message) => {
   if (message.channel.type == "dm") return;
 
   const checkPremium = require('../util/checkPremium.js');
-  let premium = checkPremium(bot, message, false)
+  let premium = checkPremium(bot, message, false, false)
 
   if (premium == false) {
     let premiumem = new Discord.RichEmbed()

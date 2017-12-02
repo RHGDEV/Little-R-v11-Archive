@@ -11,6 +11,20 @@ module.exports = (bot, message) => {
       return;
     };
   };
+  if (message.mentions.members.first()) {
+    if (message.mentions.members.first().id == bot.user.id) {
+      let mentionembed = new discord.RichEmbed()
+        .setColor("7289DA")
+        .setAuthor(`${bot.user.username} Mention`, bot.user.avatarURL)
+        .setDescription(`<@${message.author.id}>, Yes I'm Little R!\nHow may I help you?\nA very powerful bot made by <@140487710727995392>\nYou may run the help menu for more help ==> [${config.prefix}help](https://littler.tk/commands)`)
+
+
+      message.channel.send({embed: mentionembed}).then(m => m.delete(50000))
+      message.delete(2500)
+    }
+  }
+
+
   // for (x = 0; x < profanities.length; x++) {
   //   if (message.cleanContent.toLowerCase().includes(profanities[x].toLowerCase())) {
   //     // if (message.content.toLowerCase() == profanities[x].toLowerCase()) {
