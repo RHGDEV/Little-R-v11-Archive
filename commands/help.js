@@ -34,7 +34,8 @@ module.exports.run = (bot, message, args) => {
   		    .setAuthor(`${cate} ${commandEmojis[i]}`, bot.user.avatarURL)
           .setDescription(msgA)
           .setColor("7289DA")
-          .setFooter(`${count} | ${bot.user.username} Command List | https://littler.tk`)
+          .setFooter(`${count} | ${bot.user.username} Command List | http://littler.tk`)
+          .setURL("https://littler.tk")
 
         message.channel.send({embed: embed}).then(m => m.delete(55000))
         msgA = []
@@ -53,7 +54,9 @@ module.exports.run = (bot, message, args) => {
           .setAuthor(`CREATOR ONLY`, bot.user.avatarURL)
           .setDescription(msgA)
           .setColor("7289DA")
-          .setFooter(`${count} | ${bot.user.username} Command List | https://littler.tk`)
+          .setFooter(`${count} | ${bot.user.username} Command List | http://littler.tk`)
+          .setURL("https://littler.tk")
+
         message.channel.send({embed: embed}).then(m => m.delete(55000))
       }
     });;
