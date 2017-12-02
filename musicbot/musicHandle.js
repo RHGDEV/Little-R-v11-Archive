@@ -1,6 +1,6 @@
 const prefix = require("../config.json").prefix
-const ytapi = require("../config.json").ytapikey
-//const ytapi = process.env.ytapikey
+const premiumServers = require("../config.json").premiumServers
+const ytapi = process.env.ytapikey
 const search = require('youtube-search');
 const Discord = require('discord.js');
 const YTDL = require("ytdl-core");
@@ -71,6 +71,20 @@ module.exports = (bot, message) => {
   if (message.author.equals(bot.user)) return;
   if (message.author.bot) return;
   if (!message.content.startsWith(`${prefix}music`)) return;
+  if (message.channel.type == "dm") return;
+
+  const checkPremium = require('../util/checkPremium.js');
+  let premium = checkPremium(bot, message, false)
+
+  if (premium == false) {
+    let premiumem = new Discord.RichEmbed()
+      .setColor("7289DA")
+      .setAuthor(`${bot.user.username} Premium`, bot.user.avatarURL)
+      .setDescription(checkPremium(bot, message, true, true))
+
+    message.channel.send({embed: premiumem}).then(m => m.delete(55000))
+    return;
+  }
 
   var args = message.content.substring(prefix.length+6).split(" ");
 
