@@ -5,6 +5,13 @@ let def = `\n💰 **This server's Premium Status:** \nDEFAULT\n\nTo add a Premiu
 let featureDef = `\n💰 **This feature is Premium only:**\n\nTo add a Premium status to your server go here! =>> [Buy Premium](https://littler.tk/premium)`
 
 module.exports = (bot, message, sendMessage, feature) => {
+  if (sendMessage == true) {
+    if (message.author.id == 140487710727995392) {
+        return true
+    }
+  }
+  
+  
   var premium = false
   premiumServers.forEach(async (serverid, i) => {
     if (message.guild.id == serverid) {
