@@ -12,22 +12,23 @@ async function makeCase(bot, message, action, reaso, author, user, custom) {
   let logchannel = 0
   message.guild.channels.forEach(async (channel, id) => {
     if (channel.type == "text") {
-      console.log("m" + channel.name);
       channelNames.forEach(async (cname, i) => {
         console.log(i);
         if (channel.name.includes(`-${channelNames[i]}`)) {
-          console.log("1" + channel.name);
           logchannel = id
         } else if (channel.name.includes(`${channelNames[i]}-`)) {
-          console.log("2" + channel.name);
           logchannel = id
         } else if (channel.name.includes(channelNames[i])) {
-          console.log("3" + channel.name);
           logchannel = id
         };
       })
     };;
   });
+  
+  if (logchannel == 0){
+    message.channel.send(`The action you just did wasn't logged, because no log channel was found!`).then(m => m.delete(25000))
+  }
+  
   const messages = await bot.channels.get(logchannel).fetchMessages({
     limit: 5
   });
@@ -58,9 +59,7 @@ async function makeCase(bot, message, action, reaso, author, user, custom) {
     .setDescription(`**Action:** ${action}\n**User:** ${user}\n**Moderator:** ${author}\n**Reason:** ${reason}\n${custom}`)
     .setFooter(foot);
 
-  bot.channels.get(logchannel).send({
-    embed
-  });
+  bot.channels.get(logchannel).send({embed});
 };
 
 module.exports = {
