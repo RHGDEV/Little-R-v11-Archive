@@ -40,7 +40,7 @@ module.exports.run = (bot, message, args) => {
 		 if(time == 0) {
 			 member.addRole(muteRole.id);
 	 		message.channel.send(`${member.user.username}, is now muted.`).then(m => m.delete(2500))
-			makeCase(bot, "😶 Mute", `${rarg.join(" ")}`, message.author.tag, member.user.tag)
+			makeCase(bot, message, "😶 Mute", `${rarg.join(" ")}`, message.author.tag, member.user.tag)
 	 		let muteds = new Discord.RichEmbed()
 	         .setColor(`#FF0000`)
 	         .setAuthor(`Hi, ${member.user.username}!`)
@@ -52,7 +52,7 @@ module.exports.run = (bot, message, args) => {
 	 	 member.user.send({embed: muteds});
 		 return;
 		 }
-		 makeCase(bot, "😶 Timed Mute", `${rarg.join(" ")}`, message.author.tag, member.user.tag, `**Time:** ${ms(ms(time), {long: true})}`)
+		 makeCase(bot, message, "😶 Timed Mute", `${rarg.join(" ")}`, message.author.tag, member.user.tag, `**Time:** ${ms(ms(time), {long: true})}`)
 		member.addRole(muteRole.id);
 		message.channel.send(`${member.user.username}, is now muted for ${ms(ms(time), {long: true})}`).then(m => m.delete(2500))
 		let muteds = new Discord.RichEmbed()

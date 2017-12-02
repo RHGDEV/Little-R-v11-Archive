@@ -28,7 +28,7 @@ module.exports.run = (bot, message, args) => {
 		let muteRole = message.guild.roles.find("name", "Muted");
 
 		if(!member.roles.find("name", "Muted")) return message.channel.send(`:x: ${member.user.username}, isn't muted!`).then(m => m.delete(2500))
-		makeCase(bot, "😮 Unmute", `${rarg.join(" ")}`, message.author.tag, member.user.tag)
+		makeCase(bot, message, "😮 Unmute", `${rarg.join(" ")}`, message.author.tag, member.user.tag)
 			let mutede = new Discord.RichEmbed()
 	        .setColor(`#00FF00`)
 	        .setAuthor(`Hi, ${member.user.username}!`)

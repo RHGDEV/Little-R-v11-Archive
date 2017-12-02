@@ -40,7 +40,7 @@ module.exports = (bot, message, commands) => {
   if (cmd) {
     message.channel.startTyping();
     // const cmdperm = await checkPerms(bot, message, cmd.settings.permission.toLowerCase())
-    if (checkPerm(bot, message, cmd.settings.permission.toLowerCase()) == false) {
+    if (checkPerm(bot, message, cmd.settings.permission.toLowerCase(), true) == false) {
       message.channel.stopTyping();
       removedat(message, cmd);
       return;

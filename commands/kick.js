@@ -15,7 +15,7 @@ module.exports.run = (bot, message, args) => {//return;
 		}
 		kick.kick(`${reason} | Kicked by ${message.author.username}`).then(member => {
 			message.channel.send(`:white_check_mark: Successfully kicked ${member.user.username}`).then(m => m.delete(2500))
-			makeCase(bot, "👢 Kick", reason, message.author.tag, kick.user.tag)
+			makeCase(bot, message, "👢 Kick", reason, message.author.tag, kick.user.tag)
 			let kickem = new Discord.RichEmbed()
 					 .setColor("7289DA")
 					 .setAuthor(`Hi, ${kick.user.username}!`)

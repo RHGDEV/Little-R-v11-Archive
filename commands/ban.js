@@ -16,7 +16,7 @@ module.exports.run = (bot, message, args) => {//return;
 		}
 		kick.ban(`${reason} | Banned by ${message.author.username}`).then(member => {
 			message.channel.send(`:white_check_mark: Successfully banned ${member.user.username}`).then(m => m.delete(2500))
-			makeCase(bot, "🔨 Ban", `${reason}`, message.author.tag, kick.user.tag)
+			makeCase(bot, message, "🔨 Ban", `${reason}`, message.author.tag, kick.user.tag)
 			let banem = new Discord.RichEmbed()
 					 .setColor("7289DA")
 					 .setAuthor(`Hi, ${kick.user.username}!`)

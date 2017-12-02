@@ -4,6 +4,7 @@ const fs = require("fs");
 var prefix = config.prefix
 const commandCategories = ["Moderation", "Info", "Fun"]
 const commandEmojis = ["🛠", "❔", "🙃😛", "🎶 👂"]
+const checkPerm = require("../util/permissions.js");
 
 module.exports.run = (bot, message, args) => {
 
@@ -24,7 +25,7 @@ module.exports.run = (bot, message, args) => {
           let p = require(`../commands/${f}`);
           if (p.settings.category == cate) {
             if (p.settings.permission.toLowerCase() !== "creator") {
-              msgA.push(`   [${prefix}${p.help.name}]()  -  ${p.help.information}`);
+              msgA.push(`   [${prefix}${p.help.name}](https://littler.tk/commands)  -  ${p.help.information}`);
               count++
             }
           }
@@ -33,7 +34,7 @@ module.exports.run = (bot, message, args) => {
   		    .setAuthor(`${cate} ${commandEmojis[i]}`, bot.user.avatarURL)
           .setDescription(msgA)
           .setColor("7289DA")
-          .setFooter(`${count} | ${bot.user.username} Command List | Discord Bot by RHG#0822`)
+          .setFooter(`${count} | ${bot.user.username} Command List | https://littler.tk`)
 
         message.channel.send({embed: embed}).then(m => m.delete(55000))
         msgA = []
@@ -44,7 +45,7 @@ module.exports.run = (bot, message, args) => {
         jsfiles.forEach((f, i) => {
           let p = require(`../commands/${f}`);
           if (p.settings.permission.toLowerCase() == "creator") {
-            msgA.push(`   [${prefix}${p.help.name}]()  -  ${p.help.information}`);
+            msgA.push(`   [${prefix}${p.help.name}](https://littler.tk/commands)  -  ${p.help.information}`);
             count++
           }
         });
@@ -52,7 +53,7 @@ module.exports.run = (bot, message, args) => {
           .setAuthor(`CREATOR ONLY`, bot.user.avatarURL)
           .setDescription(msgA)
           .setColor("7289DA")
-          .setFooter(`${count} | ${bot.user.username} Command List | Discord Bot by RHG#0822`)
+          .setFooter(`${count} | ${bot.user.username} Command List | https://littler.tk`)
         message.channel.send({embed: embed}).then(m => m.delete(55000))
       }
     });;
@@ -73,27 +74,18 @@ module.exports.run = (bot, message, args) => {
           msgB.push(`  **Usage:** ${config.prefix}${p.help.name} ${p.help.usage}`)
           msgB.push(`  **Infomation:** ${p.help.information}`)
           msgB.push(`  **Permissions:** ${p.settings.permission}+`)
-          var Perms = "No"
-          if (p.settings.permission.toLowerCase() == "creator") {
-            if (message.author.id == config.creatorID) {
-              Perms = "Yes"
-            }
-          }
 
-          if (p.settings.permission.toLowerCase() == "admins") {
-            if (message.member.roles.some(r => ["RHG", "Admin"].includes(r.name))) {
-              Perms = "Yes"
-            };
-          }
-		     if (p.settings.permission.toLowerCase() == "all") {
+          var Perms = "No"
+          if (checkPerm(bot, message, p.settings.permission.toLowerCase(), false) == true) {
             Perms = "Yes"
           }
+
           msgB.push(`  **Permission To Use:** ${Perms}`)
           let embed = new discord.RichEmbed()
             .setAuthor(`Help menu for ${p.help.name}`, bot.user.avatarURL)
             .setDescription(msgB)
             .setColor("7289DA")
-            .setFooter(`${bot.user.username} | Discord Bot by RHG#0822`)
+            .setFooter(`${bot.user.username} | https://littler.tk`)
           message.channel.send({embed: embed}).then(m => m.delete(55000))
 
         }

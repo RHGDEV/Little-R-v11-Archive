@@ -6,7 +6,7 @@ module.exports.run = (bot, message, args) => {
 		 message.channel.send(`:hammer: Banning the ID ${args[0]}`).then(m => m.delete(2500))
 		 setTimeout(function() {
 	     message.channel.send(`:hammer: I have banned the ID ${args[0]}`).then(m => m.delete(2500))
-       makeCase(bot, "🔨 ID Ban", `${reason.join(" ")}`, message.author.tag, args[0])
+       makeCase(bot, message, "🔨 ID Ban", `${reason.join(" ")}`, message.author.tag, args[0])
 	   }, 2500)
  }).catch(err => {
 		 message.channel.send(`:x: The ID ${(args) ? args[0] : "0"} is not a valid user.`).then(m => m.delete(2500))

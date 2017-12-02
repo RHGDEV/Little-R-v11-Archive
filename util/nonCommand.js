@@ -15,7 +15,7 @@ module.exports = (bot, message) => {
   //   if (message.cleanContent.toLowerCase().includes(profanities[x].toLowerCase())) {
   //     // if (message.content.toLowerCase() == profanities[x].toLowerCase()) {
   //     console.log(`[Profanity] ${message.author.username}, said ${profanities[x]} in the ${message.channel.name} channel!`)
-  //     makeCase(bot, "Profanity", `Auto-Mod`, bot.user.tag, message.author.tag, `**Said:** ${profanities[x]}\n**Message:** ${message.content}`)
+  //     makeCase(bot, message, "Profanity", `Auto-Mod`, bot.user.tag, message.author.tag, `**Said:** ${profanities[x]}\n**Message:** ${message.content}`)
   //     message.channel.send(`<@${message.author.id}>, Please do not use profanity in this server!`).then(m => m.delete(10000))
   //     message.delete(500)
   //     return;
