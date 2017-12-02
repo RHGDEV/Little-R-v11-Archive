@@ -27,6 +27,7 @@ async function makeCase(bot, message, action, reaso, author, user, custom) {
   
   if (logchannel == 0){
     message.channel.send(`The action you just did wasn't logged, because no log channel was found!`).then(m => m.delete(25000))
+    return;
   }
   
   const messages = await bot.channels.get(logchannel).fetchMessages({
