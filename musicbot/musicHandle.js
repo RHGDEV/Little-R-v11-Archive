@@ -1,5 +1,6 @@
 const prefix = require("../config.json").prefix
-const ytapi = process.env.ytapikey
+const ytapi = require("../config.json").ytapikey
+//const ytapi = process.env.ytapikey
 const search = require('youtube-search');
 const Discord = require('discord.js');
 const YTDL = require("ytdl-core");
@@ -8,34 +9,43 @@ var servers = {};
 var opts = {
   maxResults: 1,
   type: "video",
+  //videoDuration: "short",
   key: ytapi
 };
 
 function play(connect, msg, bot) {
   var server = servers[msg.guild.id];
   console.log(`[PLER] Now started playing music in ${msg.guild.name}`)
+  let vidlive = false
   YTDL.getInfo(server.queue[0]).then(info => {
+    console.log(info)
+    console.log(info.live)
     let em = new Discord.RichEmbed()
       .setColor("7289DA")
       .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
       .setThumbnail(info.iurlmq)
-      .setDescription(`I will now start playing **${info.title}** in ${connect.channel.name}\n\n**By: **${info.author.name}\n**Requested By:** ${msg.author.tag}`)
+      .setDescription(`I will now start playing **${info.title}** in ${connect.channel.name}\n\n**By:** ${info.author.name}\n**Link:** ${server.queue[0]}\n**Length:** ${info.length_seconds}`)
 
-    msg.channel.send({embed: em}).then(m => m.delete(35000))
+    msg.channel.send({embed: em}).then(m => m.delete(55000))
+
+    if (info.length_seconds == 0) return console.log(`error`);
+
+    server.dispatcher = connect.playStream(YTDL(server.queue[0], {filter: "audioonly"}), {seek: 0, volume: 1})//, bitrate: "auto"});
   });
-  server.dispatcher = connect.playStream(YTDL(server.queue[0], {filter: "audioonly"}));
 
-  server.queue.shift();
+ // server.dispatcher = connect.playStream(YTDL(server.queue[0], {filter: "audioonly"}), {seek: 0, volume: 1, bitrate: "auto"});
 
   server.dispatcher.on("end", function() {
     if (server.queue[0]) {
+      server.queue.shift();
       play(connect, msg, bot)
     } else {
       connect.disconnect()
       console.log(`[PLER] Now stopped playing music in ${msg.guild.name}`)
       let em = new Discord.RichEmbed()
         .setColor("7289DA")
-        .setAuthor(`I have now stopped playing in ${connect.channel.name}`)
+        .setDescription(`I have now stopped playing in ${connect.channel.name}`)
+        .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
 
       msg.channel.send({embed: em}).then(m => m.delete(25000))
     }
@@ -64,7 +74,6 @@ module.exports = (bot, message) => {
 
   var args = message.content.substring(prefix.length+6).split(" ");
 
-  console.log(args)
   switch (args[0].toLowerCase()) {
     case "help":
       removedat(message)
@@ -166,20 +175,18 @@ module.exports = (bot, message) => {
       }
       message.member.voiceChannel.join()
       break;
-    case "l":
-      if (!message.author.id == mastid) {
-        console.log(`[LEAVE ATTEMPT] ${message.author.username}#${message.author.discriminator} | ${message.guild.name} | ${message.channel.name}`);
-        break;
-      }
-      removedat(message)
-      bot.guilds.forEach(async (guil, id) => {
-        if (guil.id == args[1]) {
-          guil.leave()
-          return;
-        }
+    case "queue":
+      var server = servers[message.guild.id];
+      var queueList = []
+      server.queue.forEach(async(songURL, i) => {
+        queueList.push(`${i++}: ${songURL}`)
       });
-      console.log(`[MANUAL LEAVE] Guild not found!`);
-      message.channel.send("Guild wasn't found in my list!")
+      let queue_embed = new Discord.RichEmbed()
+        .setColor("7289DA")
+        .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
+        .setDescription(queueList)
+
+      message.channel.send({embed: queue_embed}).then(m => m.delete(55000))
       break;
   };
   //message.delete();
