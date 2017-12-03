@@ -1,6 +1,6 @@
-// Rusty's Discord Bot (WHITELIST USE ONLY)
+// RHG#0822 Discord Bot
 // Date Started:    9/20/17
-// Last Edited:     11/24/17
+// Last Edited:     12/3/17
 // Date Finished:   N/A (Probally will never be finished 🔫)
 // ~~~~~~~~~~~~~ Little R ~~~~~~~~~~~~~
 
@@ -18,6 +18,9 @@ require('fs').readdir("./commands/", (err, files) => {
 
 // -- Handles --
 bot.on(`ready`, () => require("./events/ready.js")(bot));
+bot.on(`error`, (error) => console.log(error));
+//bot.on(`debug`, (debug) => console.log(debug));
+bot.on(`disconnect`, () => console.log(`Client connection attempts: FAILD`));
 bot.on(`message`, (msg) => require("./events/message.js")(bot, msg, bot.commands));
 bot.on(`message`, (msg) => require("./musicbot/musicHandle.js")(bot, msg));
 bot.on(`guildMemberAdd`, (member) => require("./events/guildMemberAdd.js")(bot, member));

@@ -1,16 +1,16 @@
 const prefix = require("../config.json").prefix
 const premiumServers = require("../config.json").premiumServers
-const ytapi = require("../config.json").ytapikey ? require("../config.json").ytapikey : process.env.ytapikey
+const config = require('../config.json');
 const search = require('youtube-search');
 const Discord = require('discord.js');
 const YTDL = require("ytdl-core");
 const FFMPEG = require("ffmpeg");
 var servers = {};
 var opts = {
-  maxResults: 1,
+  maxResults: 2,
   type: "video",
   //videoDuration: "short",
-  key: ytapi
+  key: config.ytapikey //? config.ytapikey : process.env.ytapikey
 };
 
 function play(connect, msg, bot) {
@@ -26,14 +26,38 @@ function play(connect, msg, bot) {
       .setThumbnail(info.iurlmq)
       .setDescription(`I will now start playing **${info.title}** in ${connect.channel.name}\n\n**By:** ${info.author.name}\n**Link:** ${server.queue[0]}\n**Length:** ${info.length_seconds}`)
 
-    msg.channel.send({embed: em}).then(m => m.delete(`${info.length_seconds}000`))
+    msg.channel.send({embed: em}).then(m => m.delete(50000))
 
-    if (info.length_seconds == 0) return console.log(`error`);
+    if (info.length_seconds != 1800) {
 
-    server.dispatcher = connect.playStream(YTDL(server.queue[0], {filter: "audioonly"}), {seek: 0, volume: 1})//, bitrate: "auto"});
+      server.dispatcher = connect.playStream(YTDL(server.queue[0], {filter: "audioonly"}), {seek: 0,volume: 1}) //, bitrate: "auto"});
 
-    server.dispatcher.on("end", function() {
-      if (server.queue[0]) {
+      server.dispatcher.on("end", function() {
+        console.log(server.queue);
+        if (server.queue[1]) {
+          server.queue.shift();
+          play(connect, msg, bot)
+        } else {
+          connect.disconnect()
+          console.log(`[PLER] Now stopped playing music in ${msg.guild.name}`)
+          let em = new Discord.RichEmbed()
+            .setColor("7289DA")
+            .setDescription(`I have now stopped playing in ${connect.channel.name}`)
+            .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
+
+          msg.channel.send({embed: em}).then(m => m.delete(25000))
+        };
+      });
+    } else {
+      let em = new Discord.RichEmbed()
+        .setColor("7289DA")
+        .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
+        .setThumbnail(info.iurlmq)
+        .setDescription(`I have skipped **${info.title}** in ${connect.channel.name}\n\n**Reason:** Livestream Error`)
+
+      msg.channel.send({embed: em}).then(m => m.delete(`50000`))
+
+      if (server.queue[1]) {
         server.queue.shift();
         play(connect, msg, bot)
       } else {
@@ -46,8 +70,7 @@ function play(connect, msg, bot) {
 
         msg.channel.send({embed: em}).then(m => m.delete(25000))
       };
-    });
-
+    }
   });
 };
 
@@ -81,11 +104,13 @@ module.exports = (bot, message) => {
       .setAuthor(`${bot.user.username} Premium`, bot.user.avatarURL)
       .setDescription(checkPremium(bot, message, true, true))
 
-    message.channel.send({embed: premiumem}).then(m => m.delete(55000))
+    message.channel.send({
+      embed: premiumem
+    }).then(m => m.delete(55000))
     return;
   }
 
-  var args = message.content.substring(prefix.length+6).split(" ");
+  var args = message.content.substring(prefix.length + 6).split(" ");
 
   switch (args[0].toLowerCase()) {
     case "help":
@@ -98,42 +123,46 @@ module.exports = (bot, message) => {
         .addField(`${prefix}play (Youtube link) or (field)`, `Plays a song in the current channel.`)
         .addField(`${prefix}skip`, `Skips the current song`)
 
-      message.channel.send({embed: em});
+      message.channel.send({
+        embed: em
+      });
       break;
     case "play":
-    if (!message.member.voiceChannel) {
-      removedat(message)
-      message.channel.send(":x: Oh I forgot.. You need to be in a voice channel!")
-      break;
-    }
-    if (!message.member.voiceChannel.joinable || message.member.voiceChannel.full) {
-      removedat(message)
-      message.channel.send(":x: Looks like I cannot join that voice channel.")
-      break;
-    }
+      if (!message.member.voiceChannel) {
+        removedat(message)
+        message.channel.send(":x: Oh I forgot.. You need to be in a voice channel!")
+        break;
+      }
+      if (!message.member.voiceChannel.joinable || message.member.voiceChannel.full) {
+        removedat(message)
+        message.channel.send(":x: Looks like I cannot join that voice channel.")
+        break;
+      }
       if (!args[1]) {
         removedat(message)
         message.channel.send(":x: Umm where's the link?")
         break;
       }
+      console.log(args.join(", "));
       if (!YTDL.validateURL(args[1])) {
-       // message.channel.send(":x: Are you sure thats a Youtube link?")
+        // message.channel.send(":x: Are you sure thats a Youtube link?")
         search(args.slice(1).join(" "), opts, function(err, results) {
-         if(err) return console.log(err);
-         if (!servers[message.guild.id]) servers[message.guild.id] = {
-           queue: []
-         };
+          if (err) return console.log(err);
+          if (!servers[message.guild.id]) servers[message.guild.id] = {
+            queue: []
+          };
 
-         console.log(`[QUEUE] Added music to ${message.guild.name}'s queue!' `)
+          console.log(`[QUEUE] Added music to ${message.guild.name}'s queue!' `)
 
-         var server = servers[message.guild.id]
+          var server = servers[message.guild.id]
+          console.log(results[0]);
 
-         server.queue.push(results[0].link);
+          server.queue.push(results[0].link); // ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
 
-         if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
-           play(connection, message, bot);
-         })
-         removedat(message)
+          if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
+            play(connection, message, bot);
+          })
+          removedat(message)
         });
       } else {
         if (!servers[message.guild.id]) servers[message.guild.id] = {
@@ -191,7 +220,7 @@ module.exports = (bot, message) => {
     case "queue":
       var server = servers[message.guild.id];
       var queueList = []
-      server.queue.forEach(async(songURL, i) => {
+      server.queue.forEach(async (songURL, i) => {
         queueList.push(`${i++}: ${songURL}`)
       });
       let queue_embed = new Discord.RichEmbed()
@@ -199,7 +228,9 @@ module.exports = (bot, message) => {
         .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
         .setDescription(queueList)
 
-      message.channel.send({embed: queue_embed}).then(m => m.delete(55000))
+      message.channel.send({
+        embed: queue_embed
+      }).then(m => m.delete(55000))
       break;
   };
   //message.delete();
