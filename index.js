@@ -10,9 +10,9 @@ const bot = new Discord.Client();
 
 // -- Gather commands --
 bot.commands = new Discord.Collection();
-require('fs').readdir("./commands/", (err, files) => {
+require('fs').readdir("./commands/public", (err, files) => {
   files.filter(f => f.split(".").pop() === "js").forEach((f, i) => {
-    bot.commands.set(require(`./commands/${f}`).help.name, require(`./commands/${f}`));
+    bot.commands.set(require(`./commands/public/${f}`).help.name, require(`./commands/public/${f}`));
   })
 })
 

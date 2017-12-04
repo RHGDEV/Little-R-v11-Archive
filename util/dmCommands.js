@@ -1,8 +1,9 @@
 const discord = require('discord.js');
 
 module.exports = (bot, message) => {
-    let args = []
 
+message.channel.send("DM comamnds under work! Please check back soon!")
+return;
   if (message.cleanContent.toLowerCase() == "cleardm") {
     message.channel.fetchMessages({limit: 100}).then(m => {
       m.forEach(async (msg) => {
