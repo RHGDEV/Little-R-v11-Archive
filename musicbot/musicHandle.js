@@ -10,7 +10,7 @@ var opts = {
   maxResults: 2,
   type: "video",
   //videoDuration: "short",
-  key: config.ytapikey //? config.ytapikey : process.env.ytapikey
+  key: config.ytapikey ? config.ytapikey : process.env.ytapikey
 };
 
 function play(connect, msg, bot) {
