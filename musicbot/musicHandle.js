@@ -14,45 +14,46 @@ var opts = {
 };
 
 function queueShift(server) {
-  server.queue.shift();
-  server.queue.shift();
-  server.queueName.shift();
+  server.queueList.shift();
+  server.queueNames.shift();
   server.queueAuthor.shift();
+  server.queueImage.shift();
   server.queueLength.shift();
   server.queueMessages.shift();
 };
 
 function end_Connection(server, connect, msg) {
-  if (server.queue[1]) {
-    squeueShift(server)
+  if (server.queueList[1]) {
+    queueShift(server)
     play(connect, msg, bot)
   } else {
     queueShift(server)
     connect.disconnect()
     console.log(`[PLER] Now stopped playing music in ${msg.guild.name}`)
-    let em = new Discord.RichEmbed()
+    let endem = new Discord.RichEmbed()
       .setColor("7289DA")
       .setDescription(`I have now stopped playing in ${connect.channel.name}`)
       .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
 
-    msg.channel.send({ embed: em }).then(m => m.delete(25000))
+    msg.channel.send({ embed: endem }).then(m => m.delete(25000))
   };
 };
 
 function play(connect, msg, bot) {
-  var server = servers[msg.guild.id];
+  let server = servers[msg.guild.id];
   console.log(`[PLER] Now started playing music in ${msg.guild.name}`)
 
-  if (sever.queueLength != 1800) {
+  if (server.queueLength[0] != 1800) {
+    console.log("ok1");
     let em = new Discord.RichEmbed()
       .setColor("7289DA")
       .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
-      .setThumbnail(info.iurlmq)
-      .setDescription(`I will now start playing **${server.queueNames}** in ${connect.channel.name}\n\n**By:** ${server.queueAuthor}\n**Link:** ${server.queue}\n**Length:** ${server.queueLength}`)
+      .setThumbnail(server.queueImage[0])
+      .setDescription(`I will now start playing **${server.queueNames[0]}** in ${connect.channel.name}\n\n**By:** ${server.queueAuthor[0]}\n**Link:** ${server.queueList[0]}\n**Length:** ${server.queueLength[0]}\n**Requester:** ${server.queueMessages[0].author.tag}`)
 
     msg.channel.send({ embed: em }).then(m => m.delete(50000))
 
-    server.dispatcher = connect.playStream(YTDL(server.queue[0], { filter: "audioonly" }), { seek: 0, volume: 1 }) //, bitrate: "auto"});
+    server.dispatcher = connect.playStream(YTDL(server.queueList[0], { filter: "audioonly" }), { seek: 0, volume: 1 }) //, bitrate: "auto"});
 
     server.dispatcher.on("end", function() {
       end_Connection(server, connect, msg)
@@ -61,8 +62,8 @@ function play(connect, msg, bot) {
     let em = new Discord.RichEmbed()
       .setColor("7289DA")
       .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
-      .setThumbnail(info.iurlmq)
-      .setDescription(`I have skipped **${info.title}** in ${connect.channel.name}\n\n**Reason:** Livestream Error`)
+      .setThumbnail(server.queueImage[0])
+      .setDescription(`I have skipped **${server.queueNames[0]}** in ${connect.channel.name}\n\n**Reason:** Livestream Error`)
 
     msg.channel.send({ embed: em }).then(m => m.delete(`50000`))
 
@@ -160,17 +161,16 @@ module.exports = (bot, message) => {
               .setDescription(`I have added **${info.title}** to play in ${message.member.voiceChannel.name}\n\n**By:** ${info.author.name}\n**Link:** ${results[0].link}\n**Length:** ${info.length_seconds} Seconds`)
 
             message.channel.send({ embed: em }).then(m => m.delete(25000))
-            if (!servers[message.guild.id]) servers[message.guild.id] = {
-              queue: [],
-              queueNames: [],
-              queueAuthor: [],
-              queueLength: [],
-              queueMessages: []
-            };
 
-            server.queue.push(results[0].link); // ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
-            server.queueName.push(info.title)
+            if (!servers[message.guild.id]) {
+              servers[message.guild.id] = { queueList: [], queueNames: [], queueAuthor: [], queueImage: [], queueLength: [], queueMessages: [] };
+              console.log("Adding instance of server id");
+            };
+            var server = servers[message.guild.id]
+            server.queueList.push(results[0].link);
+            server.queueNames.push(info.title)
             server.queueAuthor.push(info.author.name)
+            server.queueImage.push(info.iurlmq)
             server.queueLength.push(info.length_seconds)
             server.queueMessages.push(message)
 
@@ -194,17 +194,21 @@ module.exports = (bot, message) => {
 
           message.channel.send({ embed: em }).then(m => m.delete(25000))
 
-          if (!servers[message.guild.id]) servers[message.guild.id] = {
-            queue: [],
-            queueNames: [],
-            queueAuthor: [],
-            queueLength: [],
-            queueMessages: []
+          if (!servers[message.guild.id]) {
+            servers[message.guild.id] = {
+              queueList: [],
+              queueNames: [],
+              queueAuthor: [],
+              queueImage: [],
+              queueLength: [],
+              queueMessages: []
+            };
           };
-
-          server.queue.push(args[1])
-          server.queueName.push(info.title)
+          var server = servers[message.guild.id]
+          server.queueList.push(args[1])
+          server.queueNames.push(info.title)
           server.queueAuthor.push(info.author.name)
+          server.queueImage.push(info.iurlmq)
           server.queueLength.push(info.length_seconds)
           server.queueMessages.push(message)
 
@@ -254,8 +258,8 @@ module.exports = (bot, message) => {
     case "queue":
       var server = servers[message.guild.id];
       var queueList = []
-      server.queue.forEach(async (songURL, i) => {
-        queueList.push(`${i++}: ${songURL}`)
+      server.queueNames.forEach(async (songL, i) => {
+        queueList.push(`${i+1}: ${song}`)
       });
       let queue_embed = new Discord.RichEmbed()
         .setColor("7289DA")
