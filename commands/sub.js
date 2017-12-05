@@ -1,4 +1,4 @@
-const config = require("../../config.json");
+const config = require("../config.json");
 const aRoles = config.avaibleroles
 
 module.exports.run = (bot, message, args) => {
