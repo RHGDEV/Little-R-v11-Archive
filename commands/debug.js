@@ -5,9 +5,9 @@ const config = require("../config.json")
 
 
 module.exports.run = (bot, message, args) => {
- // return; //SOON
+  // return; //SOON
   let guild_list = []
-  bot.guilds.forEach(async(guild, id) => {
+  bot.guilds.forEach(async (guild, id) => {
     guild_list.push(`      ${guild.name}, ${id}\n`)
   });
   let embed = new discord.RichEmbed()
@@ -24,7 +24,7 @@ module.exports.run = (bot, message, args) => {
 🔊 **Status Updates:** [#${config.statues.length}]\n      ${config.statues.join("\n   ")}\n
 📄 **Whitelist Guild ids:** [#${config.whitelistedServers.length}]\n      ${config.whitelistedServers.join("\n      ")}\n
 📝 **Guilds I Know:** [#${bot.guilds.array().length}]\n${guild_list}`)
-  message.channel.send({embed}).then(m => m.delete(35000))
+  message.channel.send({ embed }).then(m => m.delete(35000))
 }
 
 module.exports.help = {

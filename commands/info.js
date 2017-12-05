@@ -15,7 +15,7 @@ module.exports.run = (bot, message, args) => {
     .addField(`Channels`, `${bot.channels.array().length}`, true)
     .addField(`Invite`, `N/A`, true)
     .addField(`Support`, `[Patreon](https://www.patreon.com/_RHG)`, true)
-  message.channel.send({embed}).then(m => m.delete(35000))
+  message.channel.send({ embed }).then(m => m.delete(35000))
 }
 
 module.exports.help = {

@@ -10,7 +10,7 @@ module.exports.run = (bot, message, args) => {
     .setAuthor(`${bot.user.username} Premium`, bot.user.avatarURL)
     .setDescription(preMessage)
 
-  message.channel.send({embed: em}).then(m => m.delete(55000))
+  message.channel.send({ embed: em }).then(m => m.delete(55000))
 }
 
 module.exports.help = {

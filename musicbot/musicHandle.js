@@ -13,65 +13,61 @@ var opts = {
   key: config.ytapikey ? config.ytapikey : process.env.ytapikey
 };
 
+function queueShift(server) {
+  server.queue.shift();
+  server.queue.shift();
+  server.queueName.shift();
+  server.queueAuthor.shift();
+  server.queueLength.shift();
+  server.queueMessages.shift();
+};
+
+function end_Connection(server, connect, msg) {
+  if (server.queue[1]) {
+    squeueShift(server)
+    play(connect, msg, bot)
+  } else {
+    queueShift(server)
+    connect.disconnect()
+    console.log(`[PLER] Now stopped playing music in ${msg.guild.name}`)
+    let em = new Discord.RichEmbed()
+      .setColor("7289DA")
+      .setDescription(`I have now stopped playing in ${connect.channel.name}`)
+      .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
+
+    msg.channel.send({ embed: em }).then(m => m.delete(25000))
+  };
+};
+
 function play(connect, msg, bot) {
   var server = servers[msg.guild.id];
   console.log(`[PLER] Now started playing music in ${msg.guild.name}`)
-  let vidlive = false
-  YTDL.getInfo(server.queue[0]).then(info => {
-    //console.log(info)
-    //console.log(info.live)
+
+  if (sever.queueLength != 1800) {
     let em = new Discord.RichEmbed()
       .setColor("7289DA")
       .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
       .setThumbnail(info.iurlmq)
-      .setDescription(`I will now start playing **${info.title}** in ${connect.channel.name}\n\n**By:** ${info.author.name}\n**Link:** ${server.queue[0]}\n**Length:** ${info.length_seconds}`)
+      .setDescription(`I will now start playing **${server.queueNames}** in ${connect.channel.name}\n\n**By:** ${server.queueAuthor}\n**Link:** ${server.queue}\n**Length:** ${server.queueLength}`)
 
-    msg.channel.send({embed: em}).then(m => m.delete(50000))
+    msg.channel.send({ embed: em }).then(m => m.delete(50000))
 
-    if (info.length_seconds != 1800) {
+    server.dispatcher = connect.playStream(YTDL(server.queue[0], { filter: "audioonly" }), { seek: 0, volume: 1 }) //, bitrate: "auto"});
 
-      server.dispatcher = connect.playStream(YTDL(server.queue[0], {filter: "audioonly"}), {seek: 0,volume: 1}) //, bitrate: "auto"});
+    server.dispatcher.on("end", function() {
+      end_Connection(server, connect, msg)
+    });
+  } else {
+    let em = new Discord.RichEmbed()
+      .setColor("7289DA")
+      .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
+      .setThumbnail(info.iurlmq)
+      .setDescription(`I have skipped **${info.title}** in ${connect.channel.name}\n\n**Reason:** Livestream Error`)
 
-      server.dispatcher.on("end", function() {
-        console.log(server.queue);
-        if (server.queue[1]) {
-          server.queue.shift();
-          play(connect, msg, bot)
-        } else {
-          connect.disconnect()
-          console.log(`[PLER] Now stopped playing music in ${msg.guild.name}`)
-          let em = new Discord.RichEmbed()
-            .setColor("7289DA")
-            .setDescription(`I have now stopped playing in ${connect.channel.name}`)
-            .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
+    msg.channel.send({ embed: em }).then(m => m.delete(`50000`))
 
-          msg.channel.send({embed: em}).then(m => m.delete(25000))
-        };
-      });
-    } else {
-      let em = new Discord.RichEmbed()
-        .setColor("7289DA")
-        .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
-        .setThumbnail(info.iurlmq)
-        .setDescription(`I have skipped **${info.title}** in ${connect.channel.name}\n\n**Reason:** Livestream Error`)
-
-      msg.channel.send({embed: em}).then(m => m.delete(`50000`))
-
-      if (server.queue[1]) {
-        server.queue.shift();
-        play(connect, msg, bot)
-      } else {
-        connect.disconnect()
-        console.log(`[PLER] Now stopped playing music in ${msg.guild.name}`)
-        let em = new Discord.RichEmbed()
-          .setColor("7289DA")
-          .setDescription(`I have now stopped playing in ${connect.channel.name}`)
-          .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
-
-        msg.channel.send({embed: em}).then(m => m.delete(25000))
-      };
-    }
-  });
+    end_Connection(server, connect, msg)
+  }
 };
 
 function removedat(msg) {
@@ -144,41 +140,79 @@ module.exports = (bot, message) => {
         break;
       }
       console.log(args.join(", "));
+      message.channel.send(`<@${message.author.id}>, I will now process that song name/link!`).then(m => m.delete(25000))
       if (!YTDL.validateURL(args[1])) {
         // message.channel.send(":x: Are you sure thats a Youtube link?")
         search(args.slice(1).join(" "), opts, function(err, results) {
           if (err) return console.log(err);
-          if (!servers[message.guild.id]) servers[message.guild.id] = {
-            queue: []
-          };
 
           console.log(`[QUEUE] Added music to ${message.guild.name}'s queue!' `)
 
           var server = servers[message.guild.id]
           console.log(results[0]);
 
-          server.queue.push(results[0].link); // ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+          YTDL.getInfo(results[0].link).then(info => {
 
-          if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
-            play(connection, message, bot);
-          })
-          removedat(message)
+            let em = new Discord.RichEmbed()
+              .setColor("7289DA")
+              .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
+              .setThumbnail(info.iurlmq)
+              .setDescription(`I have added **${info.title}** to play in ${message.member.voiceChannel.name}\n\n**By:** ${info.author.name}\n**Link:** ${results[0].link}\n**Length:** ${info.length_seconds} Seconds`)
+
+            message.channel.send({ embed: em }).then(m => m.delete(25000))
+            if (!servers[message.guild.id]) servers[message.guild.id] = {
+              queue: [],
+              queueNames: [],
+              queueAuthor: [],
+              queueLength: [],
+              queueMessages: []
+            };
+
+            server.queue.push(results[0].link); // ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
+            server.queueName.push(info.title)
+            server.queueAuthor.push(info.author.name)
+            server.queueLength.push(info.length_seconds)
+            server.queueMessages.push(message)
+
+            if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
+              play(connection, message, bot);
+            });
+            removedat(message)
+          });
         });
       } else {
-        if (!servers[message.guild.id]) servers[message.guild.id] = {
-          queue: []
-        };
 
         console.log(`[QUEUE] Added music to ${message.guild.name}'s queue!' `)
 
         var server = servers[message.guild.id]
+        YTDL.getInfo(args[1]).then(info => {
+          let em = new Discord.RichEmbed()
+            .setColor("7289DA")
+            .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
+            .setThumbnail(info.iurlmq)
+            .setDescription(`I have added **${info.title}** to play in ${message.member.voiceChannel.name}\n\n**By:** ${info.author.name}\n**Link:** ${args[1]}\n**Length:** ${info.length_seconds} Seconds`)
 
-        server.queue.push(args[1]);
+          message.channel.send({ embed: em }).then(m => m.delete(25000))
 
-        if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
-          play(connection, message, bot);
-        })
-        removedat(message)
+          if (!servers[message.guild.id]) servers[message.guild.id] = {
+            queue: [],
+            queueNames: [],
+            queueAuthor: [],
+            queueLength: [],
+            queueMessages: []
+          };
+
+          server.queue.push(args[1])
+          server.queueName.push(info.title)
+          server.queueAuthor.push(info.author.name)
+          server.queueLength.push(info.length_seconds)
+          server.queueMessages.push(message)
+
+          if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
+            play(connection, message, bot);
+          });
+          removedat(message)
+        });
       }
 
       break;

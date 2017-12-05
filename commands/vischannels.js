@@ -7,28 +7,28 @@ module.exports.run = (bot, message, args) => {
 
   chan_list.push(`#          Name,          (Channel ID)\n\n**Text Channels**:`)
   message.guild.channels.forEach(async (chan, id) => {
-      if (chan.type == "text") {
+    if (chan.type == "text") {
       chan_list.push(`${num}:        **${chan.name}**  (${id})`)
       num++
     }
   });
   chan_list.push(`\n\n**Voice Channels**:`)
-  num=1
+  num = 1
   message.guild.channels.forEach(async (chan, id) => {
-      if (chan.type == "voice") {
+    if (chan.type == "voice") {
       chan_list.push(`${num}:        **${chan.name}**  (${id})`)
       num++
     }
   });
-let embed = new discord.RichEmbed()
-  .setTimestamp()
-  .setAuthor(`${bot.user.username}'s Visible channels in ${message.guild}`, bot.user.avatarURL)
-  .setColor("7289DA")
-  .setDescription(chan_list)
+  let embed = new discord.RichEmbed()
+    .setTimestamp()
+    .setAuthor(`${bot.user.username}'s Visible channels in ${message.guild}`, bot.user.avatarURL)
+    .setColor("7289DA")
+    .setDescription(chan_list)
 
-message.channel.send({
-  embed
-}).then(m => m.delete(35000))
+  message.channel.send({
+    embed
+  }).then(m => m.delete(35000))
 }
 
 module.exports.help = {

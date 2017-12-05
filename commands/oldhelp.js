@@ -33,7 +33,7 @@ module.exports.run = (bot, message, args) => {
         msgA.push(`~ ${count}\n`)
         count = 0
       });
-      message.channel.send(msgA, {code: 'asciidoc'}).then(m => m.delete(25000))
+      message.channel.send(msgA, { code: 'asciidoc' }).then(m => m.delete(25000))
       msgA = []
       if (message.author.id == config.creatorid) {
         msgA.push(`= **CREATOR ONLY** =\n`)
@@ -79,7 +79,7 @@ module.exports.run = (bot, message, args) => {
               Perms = "Yes"
             };
           }
-		  if (p.settings.permission.toLowerCase() == "all") {
+          if (p.settings.permission.toLowerCase() == "all") {
             Perms = "Yes"
           }
           msgB.push(`**Permission To Use:** ${Perms}`)
@@ -100,7 +100,7 @@ module.exports.help = {
 }
 
 module.exports.settings = {
-  permission: "All",
+  permission: "Creator",
   deleteresponder: true,
   category: "Info"
 }

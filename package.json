@@ -7,18 +7,21 @@
   "license": "ISC",
   "dependencies": {
     "cheerio": "1.0.0-rc.2",
-    "discord.js": "11.2.1",
+    "discord.js": "^11.2.1",
     "ffmpeg": "0.0.4",
-    "ffmpeg-binaries": "3.2.2-3",
+    "ffmpeg-binaries": "^3.2.2-3",
+    "fs": "0.0.1-security",
+    "get-youtube-id": "^1.0.0",
     "humanize-duration": "^3.10.1",
     "ms": "^2.0.0",
     "nodemon": "^1.12.1",
-    "opusscript": "^0.0.4",
+    "opusscript": "0.0.4",
     "profanities": "^2.5.0",
     "querystring": "^0.2.0",
     "request": "^2.83.0",
     "snekfetch": "3.5.3",
+    "youtube-info": "^1.1.2",
     "youtube-search": "1.0.10",
-    "ytdl-core": "0.18.2"
+    "ytdl-core": "^0.18.2"
   }
 }
