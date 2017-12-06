@@ -5,6 +5,9 @@ const search = require('youtube-search');
 const Discord = require('discord.js');
 const YTDL = require("ytdl-core");
 const FFMPEG = require("ffmpeg");
+const checkPerm = require("../util/permissions.js");
+
+
 var servers = {};
 var opts = {
   maxResults: 2,
@@ -20,6 +23,8 @@ function queueShift(server) {
   server.queueImage.shift();
   server.queueLength.shift();
   server.queueMessages.shift();
+  server.skipNum = 0;
+  server.skipUsers = [];
 };
 
 function end_Connection(bot, server, connect, msg) {
@@ -117,9 +122,7 @@ module.exports = (bot, message) => {
         .addField(`${prefix}play (Youtube link) or (field)`, `Plays a song in the current channel.`)
         .addField(`${prefix}skip`, `Skips the current song`)
 
-      message.channel.send({
-        embed: em
-      });
+      message.channel.send({ embed: em });
       break;
     case "play":
       if (!message.member.voiceChannel) {
@@ -139,6 +142,9 @@ module.exports = (bot, message) => {
       }
       console.log(args.join(", "));
       message.channel.send(`<@${message.author.id}>, I will now process that song name/link!`).then(m => m.delete(25000))
+      if (!servers[message.guild.id]) {
+        servers[message.guild.id] = { queueList: [], queueNames: [], queueAuthor: [], queueImage: [], queueLength: [], queueMessages: [], skipNum: 0, skipUsers: [] };
+      };
       if (!YTDL.validateURL(args[1])) {
         // message.channel.send(":x: Are you sure thats a Youtube link?")
         search(args.slice(1).join(" "), opts, function(err, results) {
@@ -191,16 +197,6 @@ module.exports = (bot, message) => {
 
           message.channel.send({ embed: em }).then(m => m.delete(25000))
 
-          if (!servers[message.guild.id]) {
-            servers[message.guild.id] = {
-              queueList: [],
-              queueNames: [],
-              queueAuthor: [],
-              queueImage: [],
-              queueLength: [],
-              queueMessages: []
-            };
-          };
           var server = servers[message.guild.id]
           server.queueList.push(args[1])
           server.queueNames.push(info.title)
@@ -220,52 +216,67 @@ module.exports = (bot, message) => {
     case "skip":
       removedat(message)
       var server = servers[message.guild.id];
+      if (!message.guild.voiceConnection) return
+      if (server.skipUsers.indexOf(message.author.id) === -1) {
+        server.skipUsers.push(message.author.id);
+        server.skipNum = server.skipNum + 1
+        if (server.skipNum >= Math.ceil((message.guild.voiceConnection.channel.members.size - 1) / 2)) {
+          if (server.dispatcher) server.dispatcher.end()
+          message.channel.send(`⏩ ${message.author.tag}, has made us reach the skipping needs!`).then(m => m.delete(25000))
+        } else {
+          message.channel.send(`⏩ ${message.author.tag}, Your skip was noticed, but you need **${$Math.ceil((message.guild.voiceConnection.channel.members.size - 1) / 2) - server.skipNum}** more people to vote!`).then(m => m.delete(25000))
+        }
+      } else {
+        message.channel.send(`⏩ ${message.author.tag}, You have already voted to skip!`).then(m => m.delete(25000))
+      }
+      break;
+    case "fskip":
+      removedat(message)
+      if (checkPerm(bot, message, "admins", true) == false) return;
+      var server = servers[message.guild.id];
+      if (!message.guild.voiceConnection) return
       if (server.dispatcher) server.dispatcher.end()
       break;
     case "stop":
       removedat(message)
-      var server = servers[message.guild.id];
+      var server = servers[message.guild.id]
+      server.queueList = []
+      server.queueNames = []
+      server.queueAuthor = []
+      server.queueImage = []
+      server.queueLength = []
+      server.queueMessages = []
+      server.skipNum = 0
+      server.skipUsers = []
       if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
-      break;
-    case "leave":
-      removedat(message)
-      if (!message.member.voiceChannel) {
-        message.channel.send(":x: Umm you need to join a channel to be able to use this command...")
-        break;
-      };;
-      if (!message.guild.voiceConnection.channel.name == message.member.voiceChannel.name) {
-        message.channel.send(":x: Umm you need to join my channel to use this.")
-        break;
-      };
-      if (message.guild.voiceConnection) message.guild.voiceConnection.disconnect();
-      break;
-    case "join":
-      removedat(message)
-
-      if (!message.member.voiceChannel) {
-        message.channel.send(":x: Umm you need to join a channel to be able to use this command...")
-        break;
-      };;
-      if (!message.member.voiceChannel.joinable || message.member.voiceChannel.full) {
-        message.channel.send(":x: Looks like I cannot join that voice channel.")
-        break;
-      }
-      message.member.voiceChannel.join()
       break;
     case "queue":
       var server = servers[message.guild.id];
-      var queueList = []
-      server.queueNames.forEach(async (songL, i) => {
-        queueList.push(`${i+1}: ${song}`)
-      });
+      var queue = `**Queue for ${message.guild.name}** [${server.queueNames.length}]\n\n`
+      for (var i = 0; i < server.queueNames.length; i++) {
+        var temp = `**${i + 1}:** ${i === 0 ? "**(Current Song)**" : ""} ${server.queueNames[i]}\n**Requester:** ${server.queueMessages[i].author.tag}\n\n`
+        queue = queue + temp
+      }
       let queue_embed = new Discord.RichEmbed()
         .setColor("7289DA")
         .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
-        .setDescription(queueList)
+        .setDescription(queue)
 
-      message.channel.send({
-        embed: queue_embed
-      }).then(m => m.delete(55000))
+      message.channel.send({ embed: queue_embed }).then(m => m.delete(55000))
+      break;
+    case "nowplaying":
+      var server = servers[message.guild.id];
+      if (!server) { return message.channel.send(`:x: looks like noting is playing right now...`) }
+      if (!server.queueList[0]) { return message.channel.send(`:x: looks like noting is playing right now...`) }
+
+      let npem = new Discord.RichEmbed()
+        .setColor("7289DA")
+        .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
+        .setThumbnail(server.queueImage[0])
+        .setDescription(`**Now Playing** \n\n**Name:** ${server.queueNames[0]}\n**By:** ${server.queueAuthor[0]}\n**Link:** ${server.queueList[0]}\n**Length:** ${server.queueLength[0]}\n**Requester:** ${server.queueMessages[0].author.tag}`)
+
+      message.channel.send({ embed: npem }).then(m => m.delete(50000))
+
       break;
   };
   //message.delete();
