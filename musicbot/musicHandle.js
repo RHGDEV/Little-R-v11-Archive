@@ -22,7 +22,7 @@ function queueShift(server) {
   server.queueMessages.shift();
 };
 
-function end_Connection(server, connect, msg) {
+function end_Connection(bot, server, connect, msg) {
   if (server.queueList[1]) {
     queueShift(server)
     play(connect, msg, bot)
@@ -44,7 +44,6 @@ function play(connect, msg, bot) {
   console.log(`[PLER] Now started playing music in ${msg.guild.name}`)
 
   if (server.queueLength[0] != 1800) {
-    console.log("ok1");
     let em = new Discord.RichEmbed()
       .setColor("7289DA")
       .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
@@ -56,7 +55,7 @@ function play(connect, msg, bot) {
     server.dispatcher = connect.playStream(YTDL(server.queueList[0], { filter: "audioonly" }), { seek: 0, volume: 1 }) //, bitrate: "auto"});
 
     server.dispatcher.on("end", function() {
-      end_Connection(server, connect, msg)
+      end_Connection(bot, server, connect, msg)
     });
   } else {
     let em = new Discord.RichEmbed()
@@ -67,7 +66,7 @@ function play(connect, msg, bot) {
 
     msg.channel.send({ embed: em }).then(m => m.delete(`50000`))
 
-    end_Connection(server, connect, msg)
+    end_Connection(bot, server, connect, msg)
   }
 };
 
@@ -101,9 +100,7 @@ module.exports = (bot, message) => {
       .setAuthor(`${bot.user.username} Premium`, bot.user.avatarURL)
       .setDescription(checkPremium(bot, message, true, true))
 
-    message.channel.send({
-      embed: premiumem
-    }).then(m => m.delete(55000))
+    message.channel.send({ embed: premiumem }).then(m => m.delete(55000))
     return;
   }
 
