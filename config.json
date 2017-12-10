@@ -5,8 +5,8 @@
 
   "avaibleroles": ["Steam", "Minecraft", "ROBLOX"],
 
-  "whitelistedServers": ["304402108059484161", "331998474545528833", "293556722688196618", "356178662837452800"],
-  "premiumServers": ["331998474545528833", "304402108059484161", "387211675239186445", "356178662837452800", ""],
+  "whitelistedServers": ["304402108059484161", "331998474545528833", "293556722688196618", "356178662837452800", "379050322481643521"],
+  "premiumServers": ["331998474545528833", "304402108059484161", "387211675239186445", "356178662837452800", "379050322481643521"],
 
   "statues": ["Little R 🤖", "🤖 Im a beautiful bot", "Help me 🔫", "Just sitting here. Acting \"NORMAL\"", "Taking over the world wait what?", "Remember, always take precautions when using discord.", "💣 *explosions* 💣 Who knew that would happen.😏"]                    
 }
