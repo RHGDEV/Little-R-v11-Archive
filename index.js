@@ -30,4 +30,4 @@ bot.on(`guildCreate`, (guild) => require("./events/guildCreate.js")(bot, guild))
 bot.on(`guildDelete`, (guild) => require("./events/guildDelete.js")(bot, guild));
 
 // -- Login --
-bot.login(require("./config.json").keys.token ? require("./config.json").keys.token : process.env.token)
+bot.login(require("./config.json").keys ? require("./config.json").keys.token : process.env.token)
