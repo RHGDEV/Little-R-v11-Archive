@@ -13,7 +13,7 @@ var opts = {
   maxResults: 2,
   type: "video",
   //videoDuration: "short",
-  key: config.keys.ytapikey ? config.keys.ytapikey : process.env.ytapikey
+  key: config.keys ? config.keys.ytapikey : process.env.ytapikey
 };
 
 function queueShift(server) {
