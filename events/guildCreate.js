@@ -1,10 +1,11 @@
 const config = require("../config.json");
-const whiteList = config.whitelistedServers
+const whiteList = config.whiteList
 
 module.exports = (bot, guild) => {
 
+if (whiteList.whitelist == true) {
   var allowedServer = false
-  whiteList.forEach(async(id) => {
+  whiteList.whitelistedServers.forEach(async(id) => {
     if (guild.id == id) {
       allowedServer = true
     };
@@ -16,4 +17,5 @@ module.exports = (bot, guild) => {
   } else {
     console.log(`[SERVER] [#${guild.memberCount}] ${guild.name}, ${guild.id} | Joined: ${guild.joinedAt.toString()}`)
   }
+  
 };

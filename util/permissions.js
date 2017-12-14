@@ -9,7 +9,7 @@ function sendmsgfeedback(msg, send, deltime) {
 
 module.exports = (bot, message, perm, sendfeedback) => {
   // Creator always has perms!
-  if (message.author.id == config.creatorid) {
+  if (message.author.id == config.default.creatorid) {
     return true
   };
 
@@ -21,7 +21,7 @@ module.exports = (bot, message, perm, sendfeedback) => {
   }
 
   if (perm == "creator") {
-    if (message.author.id !== config.creatorid) {
+    if (message.author.id !== config.default.creatorid) {
       sendmsgfeedback(`:x: Invaild permissions! Needed: Creator`, sendfeedback, 25000)
       return false
     };
@@ -35,7 +35,7 @@ module.exports = (bot, message, perm, sendfeedback) => {
       return false
     }
 
-     // vv OLD vv (keep just incase!)
+    // vv OLD vv (keep just incase!)
     // if (!message.member.roles.some(r => ["RHG", "Admin"].includes(r.name))) {
     //   sendmsgfeedback(`:x: Invaild permissions! Needed: Admin+`, sendfeedback, 25000)
     //   return false

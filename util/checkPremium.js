@@ -1,6 +1,6 @@
 const config = require("../config.json")
 const premiumServers = config.premiumServers
-const creatorid = config.creatorid
+const creatorid = config.default.creatorid
 
 let pre = `\n💰 **This server's Premium Status:** \nPREMIUM\n\nThanks for donating for this feature!`
 let def = `\n💰 **This server's Premium Status:** \nDEFAULT\n\nTo add a Premium status to your server go here! =>> [Buy Premium](https://littler.tk/premium)`
@@ -9,11 +9,9 @@ let featureDef = `\n💰 **This feature is Premium only:**\n\nTo add a Premium s
 module.exports = (bot, message, sendMessage, feature) => {
   if (sendMessage !== true) {
     if (message.author.id == creatorid) {
-        return true
+      return true
     }
   }
-  
-  
   var premium = false
   premiumServers.forEach(async (serverid, i) => {
     if (message.guild.id == serverid) {

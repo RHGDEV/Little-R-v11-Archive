@@ -1,4 +1,3 @@
-const config = require("../config.json");
 const discord = require('discord.js');
 
 let channelNames = ["audit", "log", "logs", "little-r-logs", "littler-logs"]

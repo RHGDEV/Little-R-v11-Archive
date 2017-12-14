@@ -1,4 +1,4 @@
-const prefix = require("../config.json").prefix
+const prefix = require("../config.json").default.prefix
 const premiumServers = require("../config.json").premiumServers
 const config = require('../config.json');
 const search = require('youtube-search');
@@ -13,7 +13,7 @@ var opts = {
   maxResults: 2,
   type: "video",
   //videoDuration: "short",
-  key: config.ytapikey ? config.ytapikey : process.env.ytapikey
+  key: config.keys.ytapikey ? config.keys.ytapikey : process.env.ytapikey
 };
 
 function queueShift(server) {
@@ -53,7 +53,8 @@ function play(connect, msg, bot) {
       .setColor("7289DA")
       .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
       .setThumbnail(server.queueImage[0])
-      .setDescription(`I will now start playing **${server.queueNames[0]}** in ${connect.channel.name}\n\n**By:** ${server.queueAuthor[0]}\n**Link:** ${server.queueList[0]}\n**Length:** ${server.queueLength[0]}\n**Requester:** ${server.queueMessages[0].author.tag}`)
+      .setDescription(`I will now start playing **${server.queueNames[0]}** in ${connect.channel.name}\n\n**By:** ${server.queueAuthor[0]}\n**Link:** ${server.queueList[0]}\n**Length:** ${server.queueLength[0]}`)
+      .setFooter(`Requester: ${server.queueMessages[0].author.tag}`, server.queueMessages[0].author.avatarURL)
 
     msg.channel.send({ embed: em }).then(m => m.delete(50000))
 
@@ -140,7 +141,6 @@ module.exports = (bot, message) => {
         message.channel.send(":x: Umm where's the link?")
         break;
       }
-      console.log(args.join(", "));
       message.channel.send(`<@${message.author.id}>, I will now process that song name/link!`).then(m => m.delete(25000))
       if (!servers[message.guild.id]) {
         servers[message.guild.id] = { queueList: [], queueNames: [], queueAuthor: [], queueImage: [], queueLength: [], queueMessages: [], skipNum: 0, skipUsers: [] };
@@ -153,21 +153,11 @@ module.exports = (bot, message) => {
           console.log(`[QUEUE] Added music to ${message.guild.name}'s queue!' `)
 
           var server = servers[message.guild.id]
-          console.log(results[0]);
 
           YTDL.getInfo(results[0].link).then(info => {
 
-            let em = new Discord.RichEmbed()
-              .setColor("7289DA")
-              .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
-              .setThumbnail(info.iurlmq)
-              .setDescription(`I have added **${info.title}** to play in ${message.member.voiceChannel.name}\n\n**By:** ${info.author.name}\n**Link:** ${results[0].link}\n**Length:** ${info.length_seconds} Seconds`)
-
-            message.channel.send({ embed: em }).then(m => m.delete(25000))
-
             if (!servers[message.guild.id]) {
               servers[message.guild.id] = { queueList: [], queueNames: [], queueAuthor: [], queueImage: [], queueLength: [], queueMessages: [] };
-              console.log("Adding instance of server id");
             };
             var server = servers[message.guild.id]
             server.queueList.push(results[0].link);
@@ -177,9 +167,18 @@ module.exports = (bot, message) => {
             server.queueLength.push(info.length_seconds)
             server.queueMessages.push(message)
 
-            if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
-              play(connection, message, bot);
-            });
+            if (!message.guild.voiceConnection) {
+              message.member.voiceChannel.join().then(function(connection) { play(connection, message, bot) });
+            } else {
+              let em = new Discord.RichEmbed()
+                .setColor("7289DA")
+                .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
+                .setThumbnail(info.iurlmq)
+                .setDescription(`I have added **${info.title}** to play in ${message.member.voiceChannel.name}\n\n**By:** ${info.author.name}\n**Link:** ${results[0].link}\n**Length:** ${info.length_seconds} Seconds`)
+                .setFooter(`Requester: ${message.author.tag}`, message.author.avatarURL)
+
+              message.channel.send({ embed: em }).then(m => m.delete(25000))
+            }
             removedat(message)
           });
         });
@@ -189,14 +188,6 @@ module.exports = (bot, message) => {
 
         var server = servers[message.guild.id]
         YTDL.getInfo(args[1]).then(info => {
-          let em = new Discord.RichEmbed()
-            .setColor("7289DA")
-            .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
-            .setThumbnail(info.iurlmq)
-            .setDescription(`I have added **${info.title}** to play in ${message.member.voiceChannel.name}\n\n**By:** ${info.author.name}\n**Link:** ${args[1]}\n**Length:** ${info.length_seconds} Seconds`)
-
-          message.channel.send({ embed: em }).then(m => m.delete(25000))
-
           var server = servers[message.guild.id]
           server.queueList.push(args[1])
           server.queueNames.push(info.title)
@@ -205,9 +196,18 @@ module.exports = (bot, message) => {
           server.queueLength.push(info.length_seconds)
           server.queueMessages.push(message)
 
-          if (!message.guild.voiceConnection) message.member.voiceChannel.join().then(function(connection) {
-            play(connection, message, bot);
-          });
+          if (!message.guild.voiceConnection) {
+            message.member.voiceChannel.join().then(function(connection) { play(connection, message, bot) });
+          } else {
+            let em = new Discord.RichEmbed()
+              .setColor("7289DA")
+              .setAuthor(`${bot.user.username} Music`, bot.user.avatarURL)
+              .setThumbnail(info.iurlmq)
+              .setDescription(`I have added **${info.title}** to play in ${message.member.voiceChannel.name}\n\n**By:** ${info.author.name}\n**Link:** ${args[1]}\n**Length:** ${info.length_seconds} Seconds`)
+              .setFooter(`Requester: ${message.author.tag}`, message.author.avatarURL)
+
+            message.channel.send({ embed: em }).then(m => m.delete(25000))
+          }
           removedat(message)
         });
       }

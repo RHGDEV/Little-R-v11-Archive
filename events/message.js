@@ -1,9 +1,8 @@
 const config = require("../config.json");
-const prefix = config.prefix
-const creatorid = config.creatorid
-const logid = config.clogid
+const prefix = config.default.prefix
+const creatorid = config.default.creatorid
 const profanities = require("../profanities.json")
-const {makeCase} = require("../util/makeCase.js");
+const { makeCase } = require("../util/makeCase.js");
 const checkPerm = require("../util/permissions.js");
 const notCommand = require("../util/nonCommand.js");
 const dmCommands = require("../util/dmCommands.js");
@@ -35,7 +34,7 @@ module.exports = (bot, message, commands) => {
     return;
   };
 
-  if (message.content.indexOf(config.prefix) !== 0) return;
+  if (message.content.indexOf(prefix) !== 0) return;
 
   if (cmd) {
     message.channel.startTyping();
