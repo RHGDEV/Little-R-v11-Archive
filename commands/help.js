@@ -20,7 +20,7 @@ module.exports.run = (bot, message, args) => {
       .setDescription(`**Use *l;help (Command Category)* to get total commands in the categories!**\n**Use l;help cmd (command name) to get info on a command!**`)
       .addField(`Categories:`, `${commandCategories.join(`\n`)}`)
       .addField(`Links:`, `[Website](https://littler.tk/) | [Invite](https://littler.tk/invite.html) | [GitHub](https://github.com/RHGDEV/Little-r) \n [Discord](https://discord.gg/WUTAaSW) | [Twitter](http://www.twitter.com/RHGRDev) | [Patreon](http://www.patreon.com/_RHG)`, true)
-      .addField(`More:`, `Palceholder`)
+      .addField(`More:`, `Placeholder`)
 
     message.channel.send({ embed: embed }).then(m => m.delete(55000))
   } else {

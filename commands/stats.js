@@ -15,19 +15,18 @@ module.exports.run = (bot, message, args) => {
     .setDescription(`**= STATISTICS =**
   • Users  ::  ${bot.users.size.toLocaleString()}
   • Uptime  ::  ${duration}
-  • Servers  ::  ${bot.guilds.size.toLocaleString()}
-  • Channels  ::  ${bot.channels.size.toLocaleString()}
+  • Server${bot.guilds.array().length > 1?"s":""}  ::  ${bot.guilds.size.toLocaleString()}
+  • Channel${bot.channels.array().length > 1?"s":""}  ::  ${bot.channels.size.toLocaleString()}
   • Memory Usage  ::  ${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} MB
   • Discord.js  ::  v${version}
   • Node  ::  ${process.version}
   • Source  :: [GitHub](https://github.com/RHGDev/Little-r)
-  • Donations  :: [Patreon](https://patreon.com/_RHG)
-  • Source  :: [Website](https://littler.tk)
+  • Donation  :: [Patreon](https://patreon.com/_RHG)
+  • Website  :: [Website](https://littler.tk)
   `)
 
 
   message.channel.send({ embed: status }).then(m => m.delete(55000))
-  console.log(process);
 }
 
 module.exports.help = {
