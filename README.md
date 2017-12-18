@@ -31,7 +31,7 @@ I also take donations on Patreon! That everything will go stright into the bot!
 
 ## Todo
 
-- [x] Make it that bot runs without some of the code from the original DiscordBot.
+- [ ] Make Little R premium run from a role in Little R Discord that auto roles on patreon. (**!! Coming Really Soon !!**)
 - [x] Clean up the code a bit.
     - [ ] Clean up the code some more.
     - [ ] More modulating.
