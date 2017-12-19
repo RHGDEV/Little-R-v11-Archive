@@ -31,14 +31,13 @@ I also take donations on Patreon! That everything will go stright into the bot!
 
 ## Todo
 
-- [ ] Make Little R premium run from a role in Little R Discord that auto roles on patreon. (**!! Coming Really Soon !!**)
+- [X] Make Little R premium run from a role in Little R Discord that auto roles on patreon. (**!! NEEDS TESTING !!**)
 - [x] Clean up the code a bit.
     - [ ] Clean up the code some more.
     - [ ] More modulating.
 - [x] Add permissions to certain commands.
     - [ ] Make permissions alittle more advanced.
 - [ ] Add more fun commands
-    - [ ] Make permissions alittle more advanced.
 - [ ] Probally help print into dm instead of channel (Who knows ehh.)
 - [ ] Integrate Cleverbot support, but find a free way (or we could just terminate this idea.)
 - [ ] Make music alittle better. (discord.js is being rewritten to support voice.)
