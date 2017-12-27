@@ -28,17 +28,24 @@ I also take donations on Patreon! That everything will go stright into the bot!
 
 [![Patreon](https://img.shields.io/badge/donate-patreon-F96854.svg?style=flat-square)](https://www.patreon.com/_RHG)
 
+## Contributing
+If you want to contribute to the bot's source code, you can make a pull request and we might add your code to the main code.
 
 ## Todo
 
 - [X] Make Little R premium run from a role in Little R Discord that auto roles on patreon. (**!! NEEDS TESTING !!**)
+- [ ] Fix some bugs found.
+- [ ] Make bot configurable from a guild channel.
 - [x] Clean up the code a bit.
-    - [ ] Clean up the code some more.
+    - [x] Clean up the code some more.
     - [ ] More modulating.
 - [x] Add permissions to certain commands.
     - [ ] Make permissions alittle more advanced.
-- [ ] Add more fun commands
-- [ ] Probally help print into dm instead of channel (Who knows ehh.)
+- [ ] Add more fun commands. (or add new category)
+- [ ] Probally move help into dm channel instead of guild channel (Who knows ehh.)
 - [ ] Integrate Cleverbot support, but find a free way (or we could just terminate this idea.)
-- [ ] Make music alittle better. (discord.js is being rewritten to support voice.)
-- [ ] Create a function to make Little R to create temporary voice channels.
+- [x] Make music better
+    - [x] Add playlist support
+    - [x] Add search choices
+    - [ ] Make music "more" better. (discord.js is being rewritten to support voice.)
+- [ ] Create a command to create temporary voice channels.
