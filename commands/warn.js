@@ -10,7 +10,7 @@ module.exports.run = (bot, message, args) => { //return;
   }
   let warn = message.guild.member(message.mentions.users.first());
   if (!warn) return message.channel.send(`:x: That's not a vaild user.`).then(m => m.delete(2500));
-  message.channel.send(`👿 I have warned <@${warn.user.id}>`).then(m => m.delete(2500));
+  message.channel.send(`👿 I have warned <@${warn.user.id}>\n Warned for *${reason}*`).then(m => m.delete(2500));
   makeCase(bot, message, "👿 Warning", reason, message.author.tag, warn.user.tag)
   let warnem = new Discord.RichEmbed()
     .setColor("7289DA")

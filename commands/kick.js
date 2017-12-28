@@ -1,4 +1,5 @@
 const { makeCase } = require('../util/makeCase.js');
+const Discord = require(`discord.js`)
 
 module.exports.run = (bot, message, args) => { //return;
   let reason = args.slice(1).join(" ")
@@ -13,12 +14,12 @@ module.exports.run = (bot, message, args) => { //return;
   if (!message.guild.member(bot.user).hasPermission("KICK_MEMBERS", true)) {
     return message.channel.send(`:x: I can't kick unless I have the permissions to kick.`).then(m => m.delete(2500))
   }
-  kick.kick(`${reason} | Kicked by ${message.author.username}`).then(member => {
-    message.channel.send(`:white_check_mark: Successfully kicked ${member.user.username}`).then(m => m.delete(2500))
+  kick.kick(`${reason} | Kicked by ${message.author.tag}`).then(member => {
+    message.channel.send(`:white_check_mark: Successfully kicked ${member.user.tag}`).then(m => m.delete(2500))
     makeCase(bot, message, "👢 Kick", reason, message.author.tag, kick.user.tag)
     let kickem = new Discord.RichEmbed()
       .setColor("7289DA")
-      .setAuthor(`Hi, ${kick.user.username}!`)
+      .setAuthor(`Hi, ${kick.user.tag}!`, bot.user.avatarURL)
       .setDescription(`👢 You have been kicked from ${message.guild.name}!\n**Reason:** ${reason}`)
       .setTimestamp()
     kick.user.send({ embed: kickem });

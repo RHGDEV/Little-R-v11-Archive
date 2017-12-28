@@ -1,8 +1,9 @@
 module.exports.run = (bot, message, args) => {
-  message.channel.send(":wave: Little R will now Shutdown...").then(m => m.delete(9999))
+  message.channel.send(":wave: Little R will now Shutdown...").then(m => m.delete(5000))
   setTimeout(function() {
-    process.exit(666);
-  }, 10010)
+    bot.logout();
+    process.exit(0);
+  }, 10000)
 }
 
 module.exports.help = {

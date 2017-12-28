@@ -13,7 +13,7 @@ module.exports.run = (bot, message, args) => {
     .addField(`Servers`, `${bot.guilds.array().length}`, true)
     .addField(`Users`, `${bot.users.array().length}`, true)
     .addField(`Channels`, `${bot.channels.array().length}`, true)
-    .addField(`Invite`, `N/A`, true)
+    .addField(`Invite`, `[Invite Page](https://LittleR.tk/invite)`, true)
     .addField(`Support`, `[Patreon](https://www.patreon.com/_RHG)`, true)
   message.channel.send({ embed }).then(m => m.delete(35000))
 }

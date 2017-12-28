@@ -1,4 +1,5 @@
 const { makeCase } = require('../util/makeCase.js');
+const Discord = require(`discord.js`)
 
 module.exports.run = (bot, message, args) => { //return;
   let reason = args.slice(1).join(" ")
@@ -14,12 +15,12 @@ module.exports.run = (bot, message, args) => { //return;
   if (!message.guild.member(bot.user).hasPermission("BAN_MEMBERS", true)) {
     return message.channel.send(`:x: I can't ban unless I have the permissions to ban.`).then(m => m.delete(2500))
   }
-  kick.ban(`${reason} | Banned by ${message.author.username}`).then(member => {
-    message.channel.send(`:white_check_mark: Successfully banned ${member.user.username}`).then(m => m.delete(2500))
+  kick.ban(`${reason} | Banned by ${message.author.tag}`).then(member => {
+    message.channel.send(`:white_check_mark: Successfully banned ${member.user.tag}`).then(m => m.delete(2500))
     makeCase(bot, message, "🔨 Ban", `${reason}`, message.author.tag, kick.user.tag)
     let banem = new Discord.RichEmbed()
       .setColor("7289DA")
-      .setAuthor(`Hi, ${kick.user.username}!`)
+      .setAuthor(`Hi, ${kick.user.tag}!`, bot.user.avatarURL)
       .setDescription(`🔨 You have been banned from ${message.guild.name}!\n**Reason:** ${reason}`)
       .setTimestamp()
     kick.user.send({ embed: banem });

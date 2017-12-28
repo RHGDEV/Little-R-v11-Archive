@@ -56,7 +56,7 @@ module.exports.help = {
 }
 
 module.exports.settings = {
-  permission: "All",
+  permission: "Creator",
   deleteresponder: true,
   category: "Fun"
 }

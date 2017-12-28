@@ -2,8 +2,8 @@ const config = require("../config.json");
 const discord = require('discord.js');
 const fs = require("fs");
 var prefix = config.default.prefix
-const commandCategories = ["Moderation", "Info", "Fun"]
-const commandEmojis = ["🛠", "❔", "🙃😛", "🎶 👂"]
+const commandCategories = ["Moderation", "Info", "Fun", "18+"]
+const commandEmojis = ["🛠", "❔", "🙃😛", "😳 😱", "🎶 👂"]
 const checkPerm = require("../util/permissions.js");
 
 module.exports.run = (bot, message, args) => {
@@ -15,12 +15,12 @@ module.exports.run = (bot, message, args) => {
     let embed = new discord.RichEmbed()
       .setAuthor(`Help Command`, bot.user.avatarURL)
       .setColor("7289DA")
-      .setFooter(`${bot.user.username} Help Command | http://littler.tk`)
-      .setURL("https://littler.tk")
-      .setDescription(`**Use *l;help (Command Category)* to get total commands in the categories!**\n**Use l;help cmd (command name) to get info on a command!**`)
+      .setFooter(`${bot.user.username} Help Command | https://LittleR.tk`)
+      .setURL("https://LittleR.tk")
+      .setDescription(`**Use *l;help (Command Category)* to get total commands in the categories!**\n**Use *l;help cmd (command name)() to get info on a command!**`)
       .addField(`Categories:`, `${commandCategories.join(`\n`)}`)
-      .addField(`Links:`, `[Website](https://littler.tk/) | [Invite](https://littler.tk/invite.html) | [GitHub](https://github.com/RHGDEV/Little-r) \n [Discord](https://discord.gg/WUTAaSW) | [Twitter](http://www.twitter.com/RHGRDev) | [Patreon](http://www.patreon.com/_RHG)`, true)
-      .addField(`More:`, `Placeholder`)
+      .addField(`Links:`, `[Website](${config.social.Website}) | [Invite](${config.social.Website}invite) | [GitHub](${config.social.GitHub}) \n [Discord](https://discord.gg/${config.default.discordCode}) | [Twitter](${config.social.Twitter}) | [Patreon](${config.social.Patreon})`, true)
+      .addField(`More:`, `Yeah, just recently changed this so it probally doesn't look nice as of now.`)
 
     message.channel.send({ embed: embed }).then(m => m.delete(55000))
   } else {
@@ -46,8 +46,8 @@ module.exports.run = (bot, message, args) => {
               .setAuthor(`${cate} ${commandEmojis[i]}`, bot.user.avatarURL)
               .setDescription(msgA)
               .setColor("7289DA")
-              .setFooter(`${cate} | ${count} | ${bot.user.username} Command List | http://littler.tk`)
-              .setURL("https://littler.tk")
+              .setFooter(`${cate} | ${count} | ${bot.user.username} Command List | https://LittleR.tk`)
+              .setURL("https://LittleR.tk")
 
             message.channel.send({ embed: embed }).then(m => m.delete(55000))
             msgA = [];

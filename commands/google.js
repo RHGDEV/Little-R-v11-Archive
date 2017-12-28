@@ -9,7 +9,7 @@ module.exports.run = (bot, message, args) => {
   }
 
   let searchUrl = `https://www.google.com/search?q=${encodeURIComponent(message.content)}`;
-  message.channel.send(`Searching google for ${args.join(' ')}...`).then(m => m.delete(2500))
+  message.channel.send(`Searching google for ${args.join(' ')}...`).then(m => m.delete(5000))
   return snekfetch.get(searchUrl).then((result) => {
 
     // Cheerio lets us parse the HTML on our google result to grab the URL.
@@ -17,10 +17,10 @@ module.exports.run = (bot, message, args) => {
     let googleData = $('.r').first().find('a').first().attr('href');
 
     googleData = querystring.parse(googleData.replace('/url?', ''));
-    message.channel.send(`Results found on google for ${args.join(' ')}:\n${googleData.q}`).then(m => m.delete(5500))
+    message.channel.send(`Results found on google for ${args.join(' ')}:\n${googleData.q}`).then(m => m.delete(10000))
 
   }).catch((err) => {
-    message.channel.send(`No results found on google for ${args.join(' ')}...`).then(m => m.delete(2500))
+    message.channel.send(`No results found on google for ${args.join(' ')}...`).then(m => m.delete(10000))
   });
 }
 

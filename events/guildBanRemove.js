@@ -1,3 +1,3 @@
 module.exports = (bot, guild, member) => {
-  //SOON
+  console.log(`${guild.name}, (${guild.id}) has removed ${member.user.tag} from the ban list`)
 };
