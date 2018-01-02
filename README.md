@@ -1,8 +1,7 @@
   
 ## Little R
-Little R is a discord bot!
 
-**Just for your notice Little R is NO WHERE near to be completed and I work on the bot when I have time.**
+![FeaturesGif](https://i.imgur.com/O16JZ16.gif)
 
 [![Version](https://img.shields.io/badge/Version-2.5.3-green.svg?style=flat-square)](https://github.com/RHGDEV/Little-R/releases)
 [![Status](https://img.shields.io/badge/Status-Ready-green.svg?style=flat-square)]()
@@ -13,6 +12,7 @@ Little R is a discord bot!
 [![GitHub forks](https://img.shields.io/github/forks/RHGDEV/Little-R.svg?style=flat-square)](https://github.com/RHGDEV/Little-R/network)
 [![GitHub issues](https://img.shields.io/github/issues/RHGDEV/Little-R.svg?style=flat-square)](https://github.com/RHGDEV/Little-R/issues)
 
+**Just for your notice Little R is NO WHERE near to be completed and I work on the bot when I have time.**
 ## NOTICE
 Little R is now expanded to be alittle public so [invite](https://littler.tk/invite) the bot when you have time and check it out!
 
