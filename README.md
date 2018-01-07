@@ -1,4 +1,10 @@
-  
+ **Yes this repositoy is cleaned.**
+ 
+ **You probally wondering why by know well i'm writing a MAJOR revamp to all of this code! Check back soon!**
+ 
+ **(Probally next year)** 
+ 
+ 
 ## Little R
 
 ![FeaturesGif](https://i.imgur.com/O16JZ16.gif)
