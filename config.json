@@ -1,0 +1,37 @@
+{
+  "keys":{
+    "token": "",
+    "ytapikey": "",
+
+    "mongodbuser": 
+    "mongodbpass": ""
+  },
+
+  "default": {
+    "prefix": "l;",
+    "creatorid": 
+    "eventChannel": 
+    "donotAnnounce": []
+  },
+  
+  "social": {
+    "discordCode": 
+    "Patreon": "",
+    "Website": "https://LittleR.tk/",
+    "Twitter": "",
+    "GitHub": ""
+  },
+
+  "whitelist": {
+    "whitelist": false,
+    "whitelistedServers": [],
+    "KEYwhitelistedServersKEY": []
+  },
+
+  "premium": {
+    "premium": false,
+    "premiumServers": [],
+    "KEYpremiumServersKEY": []
+  },
+  "avaibleroles": []
+}
